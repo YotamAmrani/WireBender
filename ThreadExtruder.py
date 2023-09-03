@@ -5,7 +5,7 @@ import math
 import pygame
 from pygame.locals import *
 
-SCREEN_COLOR = (255, 255, 250)
+SCREEN_COLOR = (255, 255, 255)
 DARK_GREY = (125, 125, 125)
 LINE_WIDTH = 20
 SPINNER_DISTANCE = 100
