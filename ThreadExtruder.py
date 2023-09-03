@@ -1,28 +1,4 @@
-# PyGame template.
-
-import sys
-import math
-import pygame
-from pygame.locals import *
-
-SCREEN_COLOR = (255, 255, 255)
-DARK_GREY = (125, 125, 125)
-LINE_WIDTH = 20
-SPINNER_DISTANCE = 100
-line_length = SPINNER_DISTANCE
-total_length = 0
-angle = 0
-spinner_image_path = "spinner_medium.png"
-spinner = pygame.image.load(spinner_image_path)
-
-LEFT_MAX_VALUE = 120
-RIGHT_MIN_VALUE = -120
-
-points = []
-polar_points = []
-key_0_pressed = False
-key_1_pressed = False
-
+from Consts import *
 
 # Drawing with rounded corners
 # https://stackoverflow.com/questions/70051590/draw-lines-with-round-edges-in-pygame
@@ -30,6 +6,13 @@ key_1_pressed = False
 # Rotating an object:
 # https://stackoverflow.com/questions/59902716/how-to-rotate-element-around-pivot-point-in-pygame
 
+pygame.init()
+spinner = pygame.image.load(spinner_image_path)
+# Set up the clock. This will tick every frame and thus maintain a relatively constant framerate. Hopefully.
+fpsClock = pygame.time.Clock()
+# screen = pygame.display.set_mode((width, height))
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+screen.fill(SCREEN_COLOR)
 
 # def rotate_multiple_points(points):
 #     global angle
@@ -233,7 +216,7 @@ def update(dt):
 def runPyGame():
     # Initialise PyGame.
     pygame.init()
-
+    spinner = pygame.image.load(spinner_image_path)
     # Lod images
 
 
