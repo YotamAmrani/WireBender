@@ -133,6 +133,7 @@ def draw_multiple_lines(screen, points):
     #     draw_line_round_corners_polygon(screen, points[i + 1] + pygame.math.Vector2(0, 0),
     #                                 points[i] + pygame.math.Vector2(0, 0), 'white', 5)
 
+
 def draw_current_spinner(screen):
     global angle
     rotated = pygame.transform.rotate(spinner, angle)
