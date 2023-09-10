@@ -1,4 +1,7 @@
 from Constants import *
+from Button import *
+from View import *
+
 
 # Drawing with rounded corners
 # https://stackoverflow.com/questions/70051590/draw-lines-with-round-edges-in-pygame
@@ -6,62 +9,86 @@ from Constants import *
 # Rotating an object:
 # https://stackoverflow.com/questions/59902716/how-to-rotate-element-around-pivot-point-in-pygame
 
-# def rotate_multiple_points(points):
-#     global angle
-#     result = [points[0]]
-#     for i in range(len(points)-1):
-#         distance = points[i+1] - points[i]
-#         magnitude, current_angle = distance.as_polar()
-#         current_angle += angle
-#         distance.from_polar((magnitude, current_angle))
-#         distance += result[i]
-#         result.append(distance)
-#     return result
+
+"""------VIEW------"""
 
 
-class Button(object):
-    def __init__(self, pos, size, color, coloron, img, imghov ,imgon, function, press_once=False):
-        self.pos = pos
-        self.size = size
-        self.color = color
-        self.coloron = coloron
-        self.img = img
-        self.imghov = imghov
-        self.imgon = imgon
-        self.function = function
-        self.press_once = press_once
-        self.done = True
+def draw_current_line(screen):
+    """
 
-    def check(self):
-        mouse = pygame.mouse.get_pos()
-        click = pygame.mouse.get_pressed()
-        rect = pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])
-        on_button = rect.collidepoint(mouse)
-        if not on_button:
-            pygame.draw.rect(screen, self.color, rect)
-            screen.blit(self.img, self.img.get_rect(center=rect.center))
-            self.done = True
-        elif click[0] == 0:
-            pygame.draw.rect(screen, self.color, rect)
-            screen.blit(self.imghov, self.imghov.get_rect(center=rect.center))
-            self.done = True
-        elif click[0] == 1 and self.done:
-            pygame.draw.rect(screen, self.coloron, rect)
-            screen.blit(self.imgon, self.imgon.get_rect(center=rect.center))
-            if self.press_once:
-                self.done = False
-            if self.function is not None:
-                self.function()
-        else:
-            pygame.draw.rect(screen, self.coloron, rect)
-            screen.blit(self.imgon, self.imgon.get_rect(center=rect.center))
+    :param screen: The game screen (pygame surface)
+    :return: None
+    """
+    global line_length
+    start_position = pygame.math.Vector2(screen.get_width() // 2, screen.get_height())
+    end_position = pygame.math.Vector2(screen.get_width() // 2, screen.get_height() - line_length)
+    screen.fill(SCREEN_COLOR)  # Fill the screen with black.
+    draw_metal_line(screen, start_position, end_position)
+
+    if (line_length > SPINNER_DISTANCE):
+        screen.fill(SCREEN_COLOR)
+
+        radar_center = (screen.get_width() // 2, screen.get_height() - SPINNER_DISTANCE)
+        x = radar_center[0] + math.sin(math.radians(angle)) * (SPINNER_DISTANCE - line_length)
+        y = radar_center[1] + math.cos(math.radians(angle)) * (SPINNER_DISTANCE - line_length)
+
+        # then render the line radar->(x,y)
+        draw_metal_line(screen, start_position, radar_center)
+        draw_metal_line(screen, radar_center, (x, y))
+        # pygame.draw.line(screen, Color("black"), radar_center, (x, y), 1)
 
 
-# for each button, check if it was pressed
+def draw_multiple_lines(screen, points):
+    for i in range(len(points) - 1):
+        draw_metal_line(screen, points[i + 1], points[i])
+        # for i in range(len(points) - 1):
+        #     draw_line_round_corners_polygon(screen, points[i + 1] + pygame.math.Vector2(5, 0),
+        #                                 points[i] + pygame.math.Vector2(5, 0), DARK_GREY, 7)
+        # for i in range(len(points) - 1):
+        #     draw_line_round_corners_polygon(screen, points[i + 1] + pygame.math.Vector2(0, 0),
+        #                                 points[i] + pygame.math.Vector2(0, 0), 'white', 5)
+
+
+def draw_current_spinner(screen):
+    global angle
+    rotated = pygame.transform.rotate(spinner, angle)
+    screen.blit(rotated, rotated.get_rect(center=(screen.get_width() // 2, screen.get_height() - SPINNER_DISTANCE)))
+    # circle = pygame.draw.circle(screen, 'black', (0, 0), 30, width=2)
+    # rotated = pygame.transform.rotate(circle, angle)
+    # screen.blit(rotated, rotated.get_rect(center=(screen.get_width() // 2, screen.get_height() - SPINNER_DISTANCE)))
+
+
+def draw_line_round_corners_polygon(surf, p1, p2, c, w):
+    p1v = pygame.math.Vector2(p1)
+    p2v = pygame.math.Vector2(p2)
+    if p2v - p1v:
+        lv = (p2v - p1v).normalize()
+        lnv = pygame.math.Vector2(-lv.y, lv.x) * w // 2
+        pts = [p1v + lnv, p2v + lnv, p2v - lnv, p1v - lnv]
+        pygame.draw.polygon(surf, c, pts)
+        pygame.draw.circle(surf, c, p1, round(w / 2))
+        pygame.draw.circle(surf, c, p2, round(w / 2))
+
+
+def draw_metal_line(screen, start_position, end_position):
+    draw_line_round_corners_polygon(screen, start_position, end_position, LINE_COLOR, LINE_WIDTH)
+    # draw_line_round_corners_polygon(screen, start_position + pygame.math.Vector2(5, 0),
+    #                                 end_position + pygame.math.Vector2(5, 0), DARK_GREY, 7)
+    # draw_line_round_corners_polygon(screen, start_position + pygame.math.Vector2(0, 0),
+    #                                 end_position + pygame.math.Vector2(0, 0), 'white', 5)
+
+
 def check_buttons():
+    """
+    Check all buttons states. # for each button, check if it was pressed
+    :return: None
+    """
     global buttons
     for button in buttons:
         button.check()
+
+
+"""------GAME LOGIC------"""
 
 
 def extract_multiple_points(screen):
@@ -123,64 +150,34 @@ def revert():
         print(total_length)
 
 
-def draw_current_line(screen):
+def extrude():
     global line_length
-    start_position = pygame.math.Vector2(screen.get_width() // 2, screen.get_height())
-    end_position = pygame.math.Vector2(screen.get_width() // 2, screen.get_height() - line_length)
-    screen.fill(SCREEN_COLOR)  # Fill the screen with black.
-    draw_metal_line(screen, start_position, end_position)
-
-    if (line_length > SPINNER_DISTANCE):
-        screen.fill(SCREEN_COLOR)
-
-        radar_center = (screen.get_width() // 2, screen.get_height() - SPINNER_DISTANCE)
-        x = radar_center[0] + math.sin(math.radians(angle)) * (SPINNER_DISTANCE - line_length)
-        y = radar_center[1] + math.cos(math.radians(angle)) * (SPINNER_DISTANCE - line_length)
-
-        # then render the line radar->(x,y)
-        draw_metal_line(screen, start_position, radar_center)
-        draw_metal_line(screen, radar_center, (x, y))
-        # pygame.draw.line(screen, Color("black"), radar_center, (x, y), 1)
+    line_length += 1
 
 
-def draw_multiple_lines(screen, points):
-    for i in range(len(points) - 1):
-        draw_metal_line(screen, points[i + 1], points[i])
-    # for i in range(len(points) - 1):
-    #     draw_line_round_corners_polygon(screen, points[i + 1] + pygame.math.Vector2(5, 0),
-    #                                 points[i] + pygame.math.Vector2(5, 0), DARK_GREY, 7)
-    # for i in range(len(points) - 1):
-    #     draw_line_round_corners_polygon(screen, points[i + 1] + pygame.math.Vector2(0, 0),
-    #                                 points[i] + pygame.math.Vector2(0, 0), 'white', 5)
-
-
-def draw_current_spinner(screen):
+def rotate_right():
     global angle
-    rotated = pygame.transform.rotate(spinner, angle)
-    screen.blit(rotated, rotated.get_rect(center=(screen.get_width() // 2, screen.get_height() - SPINNER_DISTANCE )))
-    # circle = pygame.draw.circle(screen, 'black', (0, 0), 30, width=2)
-    # rotated = pygame.transform.rotate(circle, angle)
-    # screen.blit(rotated, rotated.get_rect(center=(screen.get_width() // 2, screen.get_height() - SPINNER_DISTANCE)))
+    if angle > RIGHT_MIN_VALUE:
+        angle -= 1
 
 
-def draw_line_round_corners_polygon(surf, p1, p2, c, w):
-    p1v = pygame.math.Vector2(p1)
-    p2v = pygame.math.Vector2(p2)
-    if p2v - p1v:
-        lv = (p2v - p1v).normalize()
-        lnv = pygame.math.Vector2(-lv.y, lv.x) * w // 2
-        pts = [p1v + lnv, p2v + lnv, p2v - lnv, p1v - lnv]
-        pygame.draw.polygon(surf, c, pts)
-        pygame.draw.circle(surf, c, p1, round(w / 2))
-        pygame.draw.circle(surf, c, p2, round(w / 2))
+def rotate_left():
+    global angle
+    if angle < LEFT_MAX_VALUE:
+        angle += 1
 
 
-def draw_metal_line(screen, start_position, end_position):
-    draw_line_round_corners_polygon(screen, start_position, end_position, LINE_COLOR, LINE_WIDTH)
-    # draw_line_round_corners_polygon(screen, start_position + pygame.math.Vector2(5, 0),
-    #                                 end_position + pygame.math.Vector2(5, 0), DARK_GREY, 7)
-    # draw_line_round_corners_polygon(screen, start_position + pygame.math.Vector2(0, 0),
-    #                                 end_position + pygame.math.Vector2(0, 0), 'white', 5)
+def add_segment_and_reset():
+    add_segment()
+    reset_state()
+
+
+def finish():
+    print("finish")
+    pygame.event.post(pygame.event.Event(QUIT))
+
+
+"""-------------------------------------"""
 
 
 def draw(screen):
@@ -195,29 +192,6 @@ def draw(screen):
         draw_multiple_lines(screen, points)
     draw_current_spinner(screen)
 
-
-
-def extrude():
-    global line_length
-    line_length += 1
-
-def rotate_right():
-    global angle
-    if angle > RIGHT_MIN_VALUE:
-        angle -= 1
-
-def rotate_left():
-    global angle
-    if angle < LEFT_MAX_VALUE:
-        angle += 1
-
-def add_segment_and_reset():
-    add_segment()
-    reset_state()
-
-def finish():
-    print("finish")
-    pygame.event.post(pygame.event.Event(QUIT))
 
 def update(dt):
     """
@@ -281,6 +255,7 @@ def runPyGame():
         pygame.display.flip()
         dt = fpsClock.tick(fps)
 
+
 # Set up the clock. This will tick every frame and thus maintain a relatively constant framerate. Hopefully.
 fpsClock = pygame.time.Clock()
 # screen = pygame.display.set_mode((width, height))
@@ -288,12 +263,21 @@ screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 screen.fill(SCREEN_COLOR)
 
 # set the buttons and make an array of them
-extrude_button = Button(EXTRUDE_BUTTON_POSITION, EXTRUDE_BUTTON_SIZE, buttonInactiveColour, buttonPressedColour, pic_extrude_button, pic_extrude_button_hover, pic_extrude_button_pressed, extrude)
-rotate_right_button = Button(ROTATE_RIGHT_BUTTON_POSITION, ROTATE_RIGHT_BUTTON_SIZE, buttonInactiveColour, buttonPressedColour, pic_rotate_right_button, pic_rotate_right_button_hover, pic_rotate_right_button_pressed, rotate_right)
-rotate_left_button = Button(ROTATE_LEFT_BUTTON_POSITION, ROTATE_LEFT_BUTTON_SIZE, buttonInactiveColour, buttonPressedColour, pic_rotate_left_button, pic_rotate_left_button_hover, pic_rotate_left_button_pressed, rotate_left)
-add_segment_button = Button(ADD_SEGMENT_BUTTON_POSITION, ADD_SEGMENT_BUTTON_SIZE, buttonInactiveColour, buttonPressedColour, pic_add_segment_button, pic_add_segment_button_hover, pic_add_segment_button_pressed, add_segment_and_reset, True)
-revert_button = Button(REVERT_BUTTON_POSITION, REVERT_BUTTON_SIZE, buttonInactiveColour, buttonPressedColour, pic_revert_button, pic_revert_button_hover, pic_revert_button_pressed, revert, True)
-finish_button = Button(FINISH_BUTTON_POSITION, FINISH_BUTTON_SIZE, buttonInactiveColour, buttonPressedColour, pic_finish_button, pic_finish_button_hover, pic_finish_button_pressed, finish, True)
+extrude_button = Button(screen, EXTRUDE_BUTTON_POSITION, EXTRUDE_BUTTON_SIZE, buttonInactiveColour, buttonPressedColour,
+                        pic_extrude_button, pic_extrude_button_hover, pic_extrude_button_pressed, extrude)
+rotate_right_button = Button(screen, ROTATE_RIGHT_BUTTON_POSITION, ROTATE_RIGHT_BUTTON_SIZE, buttonInactiveColour,
+                             buttonPressedColour, pic_rotate_right_button, pic_rotate_right_button_hover,
+                             pic_rotate_right_button_pressed, rotate_right)
+rotate_left_button = Button(screen, ROTATE_LEFT_BUTTON_POSITION, ROTATE_LEFT_BUTTON_SIZE, buttonInactiveColour,
+                            buttonPressedColour, pic_rotate_left_button, pic_rotate_left_button_hover,
+                            pic_rotate_left_button_pressed, rotate_left)
+add_segment_button = Button(screen, ADD_SEGMENT_BUTTON_POSITION, ADD_SEGMENT_BUTTON_SIZE, buttonInactiveColour,
+                            buttonPressedColour, pic_add_segment_button, pic_add_segment_button_hover,
+                            pic_add_segment_button_pressed, add_segment_and_reset, True)
+revert_button = Button(screen, REVERT_BUTTON_POSITION, REVERT_BUTTON_SIZE, buttonInactiveColour, buttonPressedColour,
+                       pic_revert_button, pic_revert_button_hover, pic_revert_button_pressed, revert, True)
+finish_button = Button(screen, FINISH_BUTTON_POSITION, FINISH_BUTTON_SIZE, buttonInactiveColour, buttonPressedColour,
+                       pic_finish_button, pic_finish_button_hover, pic_finish_button_pressed, finish, True)
 
 buttons = [extrude_button, rotate_right_button, rotate_left_button, add_segment_button, finish_button, revert_button]
 
