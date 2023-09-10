@@ -1,4 +1,4 @@
-from Consts import *
+from Constants import *
 
 # Drawing with rounded corners
 # https://stackoverflow.com/questions/70051590/draw-lines-with-round-edges-in-pygame
@@ -56,11 +56,13 @@ class Button(object):
             pygame.draw.rect(screen, self.coloron, rect)
             screen.blit(self.imgon, self.imgon.get_rect(center=rect.center))
 
+
 # for each button, check if it was pressed
 def check_buttons():
     global buttons
     for button in buttons:
         button.check()
+
 
 def extract_multiple_points(screen):
     global angle
@@ -198,17 +200,21 @@ def draw(screen):
 def extrude():
     global line_length
     line_length += 1
+
 def rotate_right():
     global angle
     if angle > RIGHT_MIN_VALUE:
         angle -= 1
+
 def rotate_left():
     global angle
     if angle < LEFT_MAX_VALUE:
         angle += 1
+
 def add_segment_and_reset():
     add_segment()
     reset_state()
+
 def finish():
     print("finish")
     pygame.event.post(pygame.event.Event(QUIT))
