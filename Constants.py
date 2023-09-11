@@ -2,6 +2,7 @@ import sys
 import math
 import pygame
 from pygame.locals import *
+import serial
 
 # colors
 BLACK = (0, 0, 0)
@@ -15,8 +16,14 @@ LINE_WIDTH = 20
 LINE_COLOR = GREY
 SPINNER_DISTANCE = 100
 SPINNER_SPEED = 1
-LEFT_MAX_VALUE = 120
-RIGHT_MIN_VALUE = -120
+LEFT_MAX_VALUE = 135
+RIGHT_MIN_VALUE = -135
+
+# Serial
+BAUD_RATE = 9600
+PIXEL_TO_MM = 5
+ser = serial.Serial('COM3', baudrate=BAUD_RATE, timeout=1)
+
 
 # screen
 pygame.init()
@@ -37,6 +44,8 @@ points = []
 polar_points = []
 key_0_pressed = False
 key_1_pressed = False
+key_2_pressed = False
+
 
 # buttons sizes
 EXTRUDE_BUTTON_SIZE = (175, 50)

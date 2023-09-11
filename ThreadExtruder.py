@@ -2,6 +2,14 @@ from Constants import *
 from Button import *
 from View import *
 
+import time
+
+# TODO: setup boarder to the points movement
+# TODO: setup limitations to the wire length
+# TODO: setup maybe minimal length to the wire after large rotation
+# TODO: setup global counter
+# TODO: change the overall architecture to MVC
+
 
 # Drawing with rounded corners
 # https://stackoverflow.com/questions/70051590/draw-lines-with-round-edges-in-pygame
@@ -20,11 +28,13 @@ def draw_current_line(screen):
     :return: None
     """
     global line_length
+    # Draw the starting line
     start_position = pygame.math.Vector2(screen.get_width() // 2, screen.get_height())
     end_position = pygame.math.Vector2(screen.get_width() // 2, screen.get_height() - line_length)
-    screen.fill(SCREEN_COLOR)  # Fill the screen with black.
+    screen.fill(SCREEN_COLOR)
     draw_metal_line(screen, start_position, end_position)
 
+    # Turn the current line segment
     if (line_length > SPINNER_DISTANCE):
         screen.fill(SCREEN_COLOR)
 
@@ -193,6 +203,18 @@ def draw(screen):
     draw_current_spinner(screen)
 
 
+def send_to_bender():
+    global ser
+    global PIXEL_TO_MM
+    for seg in reversed(polar_points):
+        print("segment is: " + str(seg))
+        to_string = str(seg[0]//PIXEL_TO_MM) + "," + str(seg[1]) + "\n"
+        print("After conversion: " + to_string)
+        print(to_string)
+        ser.write(to_string.encode())
+        time.sleep(15)
+
+
 def update(dt):
     """
     Update game. Called once per frame.
@@ -218,11 +240,12 @@ def update(dt):
     global angle
     global key_0_pressed
     global key_1_pressed
+    global key_2_pressed
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_UP]:
         line_length += 1
-    elif keys[pygame.K_DOWN]:
+    elif keys[pygame.K_DOWN] and line_length > SPINNER_DISTANCE:
         line_length -= 1
     if (keys[K_LEFT]) and angle < LEFT_MAX_VALUE:
         angle += 1
@@ -239,13 +262,23 @@ def update(dt):
     elif not keys[K_1] and key_1_pressed:
         revert()
         key_1_pressed = keys[K_1]
+    elif keys[K_2]:
+        key_2_pressed = keys[K_2]
+    elif not keys[K_2] and key_2_pressed:
+        send_to_bender()
+        key_2_pressed = keys[K_2]
     if keys[K_ESCAPE]:
         pygame.event.post(pygame.event.Event(QUIT))
+
+
 
 
 def runPyGame():
     # Main game loop.
     dt = 1 / fps  # dt is the time since last frame.
+
+
+
     while True:
         update(dt)
         draw(screen)
@@ -280,5 +313,8 @@ finish_button = Button(screen, FINISH_BUTTON_POSITION, FINISH_BUTTON_SIZE, butto
                        pic_finish_button, pic_finish_button_hover, pic_finish_button_pressed, finish, True)
 
 buttons = [extrude_button, rotate_right_button, rotate_left_button, add_segment_button, finish_button, revert_button]
+
+
+
 
 runPyGame()
