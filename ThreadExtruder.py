@@ -1,16 +1,19 @@
 from Constants import *
 from Button import *
+import sys
+import pygame
+from pygame.locals import *
 from View import *
 from Model import *
 import time
 import serial
+
 
 # TODO: setup boarder to the points movement
 # TODO: setup limitations to the wire length
 # TODO: setup maybe minimal length to the wire after large rotation
 # TODO: setup global counter
 # TODO: adding alerts to indicate if we passed the length / rotation which is allowed
-
 
 
 # Drawing with rounded corners
@@ -40,12 +43,13 @@ class Controller:
             self.serial = None
 
     def load_buttons(self):
-        self.model.append_button(self.extrude, EXTRUDE_BUTTON_POSITION,EXTRUDE_BUTTON_SIZE,
+        self.model.append_button(self.extrude, EXTRUDE_BUTTON_POSITION, EXTRUDE_BUTTON_SIZE,
                                  EXTRUDE_IDLE_IMAGE_PATH, EXTRUDE_HOVER_IMAGE_PATH, EXTRUDE_CLICK_IMAGE_PATH)
-        self.model.append_button(self.revert, REVERT_BUTTON_POSITION,REVERT_BUTTON_SIZE,
-                                 REVERT_IDLE_IMAGE_PATH, REVERT_HOVER_IMAGE_PATH ,REVERT_CLICK_IMAGE_PATH, True)
+        self.model.append_button(self.revert, REVERT_BUTTON_POSITION, REVERT_BUTTON_SIZE,
+                                 REVERT_IDLE_IMAGE_PATH, REVERT_HOVER_IMAGE_PATH, REVERT_CLICK_IMAGE_PATH, True)
         self.model.append_button(self.rotate_right, ROTATE_RIGHT_BUTTON_POSITION, ROTATE_RIGHT_BUTTON_SIZE,
-                                 ROTATE_RIGHT_IDLE_IMAGE_PATH, ROTATE_RIGHT_HOVER_IMAGE_PATH, ROTATE_RIGHT_CLICK_IMAGE_PATH)
+                                 ROTATE_RIGHT_IDLE_IMAGE_PATH, ROTATE_RIGHT_HOVER_IMAGE_PATH,
+                                 ROTATE_RIGHT_CLICK_IMAGE_PATH)
         self.model.append_button(self.rotate_left, ROTATE_LEFT_BUTTON_POSITION, ROTATE_LEFT_BUTTON_SIZE,
                                  ROTATE_LEFT_IDLE_IMAGE_PATH, ROTATE_LEFT_HOVER_IMAGE_PATH,
                                  ROTATE_LEFT_CLICK_IMAGE_PATH)
@@ -56,7 +60,7 @@ class Controller:
                                  FINISH_IDLE_IMAGE_PATH, FINISH_HOVER_IMAGE_PATH,
                                  FINISH_CLICK_IMAGE_PATH, True)
 
-    def update(self,dt):
+    def update(self, dt):
         """
         Update game. Called once per frame.
         dt is the amount of time passed since last frame.
@@ -124,7 +128,8 @@ class Controller:
 
         self.model.points = []
         if self.model.polar_points:
-            origin = pygame.Vector2(self.model.screen.get_width() // 2, self.model.screen.get_height() - SPINNER_DISTANCE)
+            origin = pygame.Vector2(self.model.screen.get_width() // 2,
+                                    self.model.screen.get_height() - SPINNER_DISTANCE)
             # points.append(origin)
             edge_point = pygame.Vector2(0, 0)
             edge_point.from_polar((self.model.segment_length - SPINNER_DISTANCE, -(90 + self.model.bender_angle)))
@@ -148,7 +153,7 @@ class Controller:
 
     def add_segment(self):
         current_segment = (self.model.segment_length - SPINNER_DISTANCE, self.model.bender_angle)
-        if(current_segment[0] != 0 and current_segment[1] != 0):
+        if current_segment[0] != 0 and current_segment[1] != 0:
             self.model.total_length += self.model.segment_length - SPINNER_DISTANCE
             self.model.polar_points = [current_segment] + self.model.polar_points
         print(self.model.polar_points)
@@ -189,15 +194,14 @@ class Controller:
                 self.serial.write(to_string.encode())
                 time.sleep(15)
 
-    def finish(self):
+    @staticmethod
+    def finish():
         print("finish")
         pygame.event.post(pygame.event.Event(QUIT))
 
 
-
 def runPyGame():
     pygame.init()
-
 
     # Set up the clock. This will tick every frame and thus maintain a relatively constant framerate. Hopefully.
     fpsClock = pygame.time.Clock()
@@ -211,5 +215,6 @@ def runPyGame():
         pygame.display.update()
         pygame.display.flip()
         dt = fpsClock.tick(fps)
+
 
 runPyGame()

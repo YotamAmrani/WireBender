@@ -18,6 +18,7 @@ class Model:
         self.segment_length = SPINNER_DISTANCE
         self.total_length = 0
         self.buttons = []
+        self.spinner = pygame.image.load(SPINNER_IMAGE)
         self.key_0_pressed = False
         self.key_1_pressed = False
         self.key_2_pressed = False

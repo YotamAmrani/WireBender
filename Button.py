@@ -8,7 +8,7 @@ class Button(object):
         CLICK = 2
         HOVER = 3
 
-    def __init__(self, screen, pos, size, color, coloron, function, press_once = False):
+    def __init__(self, screen, pos, size, color, coloron, triggered_function, press_once=False):
         self.pos = pos
         self.size = size
         self.color = color
@@ -16,7 +16,7 @@ class Button(object):
         self.img = None
         self.imghov = None
         self.imgon = None
-        self.function = function
+        self.function = triggered_function
         self.press_once = press_once
         self.done = True
         self.screen = screen
@@ -54,7 +54,7 @@ class Button(object):
             pygame.draw.rect(self.screen, self.color, self.rect)
             self.screen.blit(self.imghov, self.imghov.get_rect(center=self.rect.center))
 
-    def load_image(self, image_state, image_path):
+    def load_image(self, image_state, image_path: str):
         temp_image = pygame.image.load(image_path)
         temp_image = pygame.transform.scale(temp_image, self.size)
 
@@ -64,33 +64,3 @@ class Button(object):
             self.imgon = temp_image
         elif image_state == self.State.HOVER:
             self.imghov = temp_image
-
-
-
-
-
-            # def check(self):
-    #     mouse = pygame.mouse.get_pos()
-    #     click = pygame.mouse.get_pressed()
-    #     on_button = self.rect.collidepoint(mouse)
-    #     if not on_button:
-    #         pygame.draw.rect(self.screen, self.color, self.rect)
-    #         self.screen.blit(self.img, self.img.get_rect(center=self.rect.center))
-    #         self.done = True
-    #     elif click[0] == 0:
-    #         pygame.draw.rect(self.screen, self.color, self.rect)
-    #         self.screen.blit(self.imghov, self.imghov.get_rect(center=self.rect.center))
-    #         self.done = True
-    #     elif click[0] == 1 and self.done:
-    #         pygame.draw.rect(self.screen, self.coloron, self.rect)
-    #         self.screen.blit(self.imgon, self.imgon.get_rect(center=self.rect.center))
-    #         if self.press_once:
-    #             self.done = False
-    #         if self.function is not None:
-    #             self.function()
-    #     else:
-    #         pygame.draw.rect(self.screen, self.coloron, self.rect)
-    #         self.screen.blit(self.imgon, self.imgon.get_rect(center=self.rect.center))
-
-
-
