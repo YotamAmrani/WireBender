@@ -8,7 +8,7 @@ class Button(object):
         CLICK = 2
         HOVER = 3
 
-    def __init__(self, screen, pos, size, color, coloron, function):
+    def __init__(self, screen, pos, size, color, coloron, function, press_once = False):
         self.pos = pos
         self.size = size
         self.color = color
@@ -17,7 +17,7 @@ class Button(object):
         self.imghov = None
         self.imgon = None
         self.function = function
-        self.press_once = False
+        self.press_once = press_once
         self.done = True
         self.screen = screen
         self.rect = pygame.Rect(self.pos[0], self.pos[1], self.size[0], self.size[1])

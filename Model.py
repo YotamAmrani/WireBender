@@ -22,10 +22,10 @@ class Model:
         self.key_1_pressed = False
         self.key_2_pressed = False
 
-    def append_button(self, button_function, image_position, image_size, idle_image_path, hover_image_path, click_image_path):
+    def append_button(self, button_function, image_position, image_size, idle_image_path, hover_image_path, click_image_path,press_once = False):
         # set the buttons and make an array of them
         current_button = Button(self.screen, image_position, image_size, buttonInactiveColour,
-                                buttonPressedColour,button_function)
+                                buttonPressedColour,button_function, press_once)
         current_button.load_image(Button.State.IDLE, idle_image_path)
         current_button.load_image(Button.State.CLICK, hover_image_path)
         current_button.load_image(Button.State.HOVER, click_image_path)

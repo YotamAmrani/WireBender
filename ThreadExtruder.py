@@ -12,6 +12,7 @@ import serial
 # TODO: adding alerts to indicate if we passed the length / rotation which is allowed
 
 
+
 # Drawing with rounded corners
 # https://stackoverflow.com/questions/70051590/draw-lines-with-round-edges-in-pygame
 
@@ -42,7 +43,7 @@ class Controller:
         self.model.append_button(self.extrude, EXTRUDE_BUTTON_POSITION,EXTRUDE_BUTTON_SIZE,
                                  EXTRUDE_IDLE_IMAGE_PATH, EXTRUDE_HOVER_IMAGE_PATH, EXTRUDE_CLICK_IMAGE_PATH)
         self.model.append_button(self.revert, REVERT_BUTTON_POSITION,REVERT_BUTTON_SIZE,
-                                 REVERT_IDLE_IMAGE_PATH, REVERT_HOVER_IMAGE_PATH ,REVERT_CLICK_IMAGE_PATH)
+                                 REVERT_IDLE_IMAGE_PATH, REVERT_HOVER_IMAGE_PATH ,REVERT_CLICK_IMAGE_PATH, True)
         self.model.append_button(self.rotate_right, ROTATE_RIGHT_BUTTON_POSITION, ROTATE_RIGHT_BUTTON_SIZE,
                                  ROTATE_RIGHT_IDLE_IMAGE_PATH, ROTATE_RIGHT_HOVER_IMAGE_PATH, ROTATE_RIGHT_CLICK_IMAGE_PATH)
         self.model.append_button(self.rotate_left, ROTATE_LEFT_BUTTON_POSITION, ROTATE_LEFT_BUTTON_SIZE,
@@ -50,10 +51,10 @@ class Controller:
                                  ROTATE_LEFT_CLICK_IMAGE_PATH)
         self.model.append_button(self.add_segment_and_reset, ADD_SEGMENT_BUTTON_POSITION, ADD_SEGMENT_BUTTON_SIZE,
                                  ADD_SEGMENT_IDLE_IMAGE_PATH, ADD_SEGMENT_HOVER_IMAGE_PATH,
-                                 ADD_SEGMENT_CLICK_IMAGE_PATH)
+                                 ADD_SEGMENT_CLICK_IMAGE_PATH, True)
         self.model.append_button(self.finish, FINISH_BUTTON_POSITION, FINISH_BUTTON_SIZE,
                                  FINISH_IDLE_IMAGE_PATH, FINISH_HOVER_IMAGE_PATH,
-                                 FINISH_CLICK_IMAGE_PATH)
+                                 FINISH_CLICK_IMAGE_PATH, True)
 
     def update(self,dt):
         """
