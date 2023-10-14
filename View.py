@@ -77,11 +77,16 @@ class View:
             button.draw()
             # print("was here!")
 
-    def draw(self):
+    def draw_alarms(self):
+        for a in self._model.alarms:
+            if a.turn_on:
+                a.draw_alarm()
 
+    def draw(self):
         self.draw_current_line()
         # extract_multiple_points(self._model.screen)
         if self._model.points:
             self.draw_multiple_lines()
         self.draw_current_spinner()
         self.draw_buttons()
+        self.draw_alarms()

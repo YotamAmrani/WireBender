@@ -2,7 +2,6 @@ from Constants import *
 from Button import *
 import sys
 import pygame
-from pygame.locals import *
 from View import *
 from Model import *
 import time
@@ -36,6 +35,7 @@ class Controller:
         self.model = Model(screen)
         self.view = View(self.model)
         self.load_buttons()
+        self.load_alarms()
         try:
             self.serial = serial.Serial('COM3', baudrate=BAUD_RATE, timeout=1)
         except serial.SerialException:
@@ -53,12 +53,16 @@ class Controller:
         self.model.append_button(self.rotate_left, ROTATE_LEFT_BUTTON_POSITION, ROTATE_LEFT_BUTTON_SIZE,
                                  ROTATE_LEFT_IDLE_IMAGE_PATH, ROTATE_LEFT_HOVER_IMAGE_PATH,
                                  ROTATE_LEFT_CLICK_IMAGE_PATH)
-        self.model.append_button(self.add_segment_and_reset, ADD_SEGMENT_BUTTON_POSITION, ADD_SEGMENT_BUTTON_SIZE,
-                                 ADD_SEGMENT_IDLE_IMAGE_PATH, ADD_SEGMENT_HOVER_IMAGE_PATH,
-                                 ADD_SEGMENT_CLICK_IMAGE_PATH, True)
+        # self.model.append_button(self.add_segment_and_reset, ADD_SEGMENT_BUTTON_POSITION, ADD_SEGMENT_BUTTON_SIZE,
+        #                          ADD_SEGMENT_IDLE_IMAGE_PATH, ADD_SEGMENT_HOVER_IMAGE_PATH,
+        #                          ADD_SEGMENT_CLICK_IMAGE_PATH, True)
         self.model.append_button(self.finish, FINISH_BUTTON_POSITION, FINISH_BUTTON_SIZE,
                                  FINISH_IDLE_IMAGE_PATH, FINISH_HOVER_IMAGE_PATH,
                                  FINISH_CLICK_IMAGE_PATH, True)
+
+    def load_alarms(self):
+        self.model.append_alarm(ALARM_POSITION, ALARM_SIZE, EXTRUDE_IDLE_IMAGE_PATH, ROTATE_RIGHT_ALARM)
+        self.model.append_alarm(ALARM_POSITION, ALARM_SIZE, EXTRUDE_CLICK_IMAGE_PATH, ROTATE_LEFT_ALARM)
 
     def update(self, dt):
         """
@@ -81,6 +85,12 @@ class Controller:
                 sys.exit()  # Not including this line crashes the script on Windows. Possibly
                 # on other operating systems too, but I don't know for sure.
                 # Handle other events as you wish.
+            if event.type == ROTATE_RIGHT_ALARM:
+                self.model.alarms[0].turn_on = True
+            elif event.type == ROTATE_LEFT_ALARM:
+                self.model.alarms[1].turn_on = True
+
+
         global key_0_pressed
         global key_1_pressed
         global key_2_pressed
@@ -168,17 +178,28 @@ class Controller:
             self.model.total_length -= self.model.segment_length
             self.model.polar_points = self.model.polar_points[1:]
             print(self.model.total_length)
+        else:
+            self.model.segment_length, self.model.bender_angle = (SPINNER_DISTANCE, 0)
 
     def extrude(self):
-        self.model.segment_length += 1
+        if self.model.bender_angle == 0:
+            self.model.segment_length += 1
+        else:
+            self.add_segment_and_reset()
 
     def rotate_right(self):
         if self.model.bender_angle > RIGHT_MIN_VALUE:
             self.model.bender_angle -= 1
+        else:
+            pygame.event.post(pygame.event.Event(ROTATE_RIGHT_ALARM))
+            print("rotate right alarm")
 
     def rotate_left(self):
         if self.model.bender_angle < LEFT_MAX_VALUE:
             self.model.bender_angle += 1
+        else:
+            pygame.event.post(pygame.event.Event(ROTATE_LEFT_ALARM))
+            print("rotate left alarm")
 
     def add_segment_and_reset(self):
         self.add_segment()

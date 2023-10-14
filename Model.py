@@ -1,5 +1,6 @@
 from Constants import *
 from Button import *
+from Alarm import *
 import pygame
 
 
@@ -18,6 +19,7 @@ class Model:
         self.segment_length = SPINNER_DISTANCE
         self.total_length = 0
         self.buttons = []
+        self.alarms = []
         self.spinner = pygame.image.load(SPINNER_IMAGE)
         self.key_0_pressed = False
         self.key_1_pressed = False
@@ -28,12 +30,14 @@ class Model:
         current_button = Button(self.screen, image_position, image_size, buttonInactiveColour,
                                 buttonPressedColour,button_function, press_once)
         current_button.load_image(Button.State.IDLE, idle_image_path)
-        current_button.load_image(Button.State.CLICK, hover_image_path)
-        current_button.load_image(Button.State.HOVER, click_image_path)
+        current_button.load_image(Button.State.HOVER, hover_image_path)
+        current_button.load_image(Button.State.CLICK, click_image_path)
         self.buttons.append(current_button)
 
-
-
+    def append_alarm(self,image_position, image_size,image_path, event_id):
+        current_alarm = Alarm(self.screen, image_position, image_size, buttonInactiveColour, event_id)
+        current_alarm.load_image(image_path)
+        self.alarms.append(current_alarm)
 
 
 
