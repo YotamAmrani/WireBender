@@ -58,8 +58,8 @@ ALARM_POSITION = (SCREEN_WIDTH//2 - 400/2, SCREEN_HEIGHT //2 - 50//2)
 ALARM_TIMER = 1
 ROTATE_RIGHT_ALARM = USEREVENT + 1
 ROTATE_LEFT_ALARM = USEREVENT + 2
-SEGMENT_OUT_OF_BOUNDARY = USEREVENT + 3
-SEGMENT_TOO_LONG = USEREVENT + 4
+SEGMENT_OUT_OF_BOUNDARY_ALARM = USEREVENT + 3
+SEGMENT_TOO_LONG_ALARM = USEREVENT + 4
 
 
 
@@ -99,6 +99,8 @@ ADD_SEGMENT_CLICK_IMAGE_PATH = "pictures/add_segment_button_2.jpg"
 FINISH_IDLE_IMAGE_PATH = "pictures/finish_button_0.jpg"
 FINISH_HOVER_IMAGE_PATH = "pictures/finish_button_1.png"
 FINISH_CLICK_IMAGE_PATH = "pictures/finish_button_2.jpg"
-TOO_LONG_ALARM_PATH = "pictures/too long.png"
+
 LEFT_ALARM_PATH = "pictures/left.png"
 RIGHT_ALARM_PATH = "pictures/right.png"
+SEGMENT_OUT_OF_BOUNDARY_PATH = "pictures/out_of_boundary.png"
+TOO_LONG_ALARM_PATH = "pictures/too long.png"

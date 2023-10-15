@@ -4,6 +4,7 @@ from Alarm import *
 import pygame
 
 
+
 class Model:
     """
     The model object will Hold all data
@@ -20,6 +21,7 @@ class Model:
         self.total_length = 0
         self.buttons = []
         self.alarms = []
+        self.colliders = []
         self.spinner = pygame.image.load(SPINNER_IMAGE)
         self.key_0_pressed = False
         self.key_1_pressed = False
@@ -38,6 +40,8 @@ class Model:
         current_alarm = Alarm(self.screen, image_position, image_size, buttonInactiveColour, event_id)
         current_alarm.load_image(image_path)
         self.alarms.append(current_alarm)
+
+
 
 
 

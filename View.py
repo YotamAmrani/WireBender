@@ -93,6 +93,21 @@ class View:
                                                        , 34,
                                                        300 * ratio))
 
+    def collision_box(self):
+        # get the start point
+        # end_position = pygame.math.Vector2(self._model.screen.get_width() // 2,
+        #                                    self._model.screen.get_height() - SPINNER_DISTANCE)
+
+        # for i in range(0,SPINNER_DISTANCE, 10):
+        #     pygame.draw.rect(self._model.screen, 'red', ((SCREEN_WIDTH-(300-i*2))//2, (SCREEN_HEIGHT-i), 300-i*2, i))
+            # print(i)
+        for c in self._model.colliders:
+            pygame.draw.rect(self._model.screen, 'red',
+                             c)
+            print(c)
+
+
+
     def draw(self):
         self.draw_start_line()
         self.draw_current_line()
@@ -103,3 +118,4 @@ class View:
         self.draw_buttons()
         self.draw_alarms()
         self.draw_length_bar()
+        # self.collision_box()

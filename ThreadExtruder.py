@@ -9,10 +9,8 @@ import serial
 
 
 # TODO: setup boarder to the points movement
-# TODO: setup limitations to the wire length
 # TODO: setup maybe minimal length to the wire after large rotation
-# TODO: setup global counter
-# TODO: adding alerts to indicate if we passed the length / rotation which is allowed
+# TODO: differ between one time press button and long press
 
 
 # Drawing with rounded corners
@@ -36,6 +34,8 @@ class Controller:
         self.view = View(self.model)
         self.load_buttons()
         self.load_alarms()
+        self.add_colliders()
+
         try:
             self.serial = serial.Serial('COM3', baudrate=BAUD_RATE, timeout=1)
         except serial.SerialException:
@@ -63,7 +63,14 @@ class Controller:
     def load_alarms(self):
         self.model.append_alarm(ALARM_POSITION, ALARM_SIZE, RIGHT_ALARM_PATH, ROTATE_RIGHT_ALARM)
         self.model.append_alarm(ALARM_POSITION, ALARM_SIZE, LEFT_ALARM_PATH, ROTATE_LEFT_ALARM)
-        self.model.append_alarm(ALARM_POSITION, ALARM_SIZE, TOO_LONG_ALARM_PATH, SEGMENT_TOO_LONG)
+        self.model.append_alarm(ALARM_POSITION, ALARM_SIZE, SEGMENT_OUT_OF_BOUNDARY_PATH, SEGMENT_OUT_OF_BOUNDARY_ALARM)
+        self.model.append_alarm(ALARM_POSITION, ALARM_SIZE, TOO_LONG_ALARM_PATH, SEGMENT_TOO_LONG_ALARM)
+
+    def add_colliders(self):
+        for i in range(0,SPINNER_DISTANCE, 10):
+            self.model.colliders.append(Rect((SCREEN_WIDTH-(300-i*2))//2, (SCREEN_HEIGHT-i), 300-i*2, i))
+            # pygame.draw.rect(self._model.screen, 'red', ((SCREEN_WIDTH-(300-i*2))//2, (SCREEN_HEIGHT-i), 300-i*2, i))
+            # print(i)
 
     def update(self, dt):
         """
@@ -90,8 +97,10 @@ class Controller:
                 self.model.alarms[0].turn_on = True
             elif event.type == ROTATE_LEFT_ALARM:
                 self.model.alarms[1].turn_on = True
-            elif event.type == SEGMENT_TOO_LONG:
+            elif event.type == SEGMENT_OUT_OF_BOUNDARY_ALARM:
                 self.model.alarms[2].turn_on = True
+            elif event.type == SEGMENT_TOO_LONG_ALARM:
+                self.model.alarms[3].turn_on = True
 
         global key_0_pressed
         global key_1_pressed
@@ -125,7 +134,7 @@ class Controller:
         if keys[K_ESCAPE]:
             pygame.event.post(pygame.event.Event(QUIT))
 
-        self.extract_multiple_points()
+        self.model.points = self.extract_multiple_points(self.model.segment_length, self.model.bender_angle)
         self.check_buttons()
 
     def check_buttons(self):
@@ -136,20 +145,19 @@ class Controller:
         for button in self.model.buttons:
             button.update()
 
-    def extract_multiple_points(self):
-
-        self.model.points = []
+    def extract_multiple_points(self, length, angle):
+        points = []
         if self.model.polar_points:
             origin = pygame.Vector2(self.model.screen.get_width() // 2,
                                     self.model.screen.get_height() - SPINNER_DISTANCE)
             # points.append(origin)
             edge_point = pygame.Vector2(0, 0)
-            edge_point.from_polar((self.model.segment_length , -(90 + self.model.bender_angle)))
+            edge_point.from_polar((length , -(90 + angle)))
             edge_point += origin
 
             # new_polar_points = [origin.as_polar()] + polar_points
-            self.model.points = [edge_point]
-            current_angle = self.model.bender_angle
+            points = [edge_point]
+            current_angle = angle
             for p in range(len(self.model.polar_points)):
                 phi, r = self.model.polar_points[p]
                 # convert to current presentation
@@ -157,10 +165,11 @@ class Controller:
                 # rotate by angles of previous lines
                 current_polar_point = pygame.Vector2(0, 0)
                 current_polar_point.from_polar((phi, r))
-                current_polar_point += self.model.points[p]
-                self.model.points.append(current_polar_point)
+                current_polar_point += points[p]
+                points.append(current_polar_point)
                 current_angle += self.model.polar_points[p][1]
 
+        return points
                 # print(self.model.points)
 
     def add_segment(self):
@@ -188,26 +197,44 @@ class Controller:
             self.reset_state()
 
     def extrude(self):
-        if self.model.bender_angle == 0:
+        if self.test_collisions(self.model.segment_length + 1,self.model.bender_angle) or \
+                self.test_boarders(self.model.segment_length + 1,self.model.bender_angle):
+            pygame.event.post(pygame.event.Event(SEGMENT_OUT_OF_BOUNDARY_ALARM))
+
+        elif self.model.bender_angle == 0:
             if self.model.total_length + self.model.segment_length < LINE_MAX_LENGTH:
                 self.model.segment_length += 1
             else:
-                pygame.event.post(pygame.event.Event(SEGMENT_TOO_LONG))
+                pygame.event.post(pygame.event.Event(SEGMENT_TOO_LONG_ALARM))
                 print("segment is too long alarm")
 
         else:
             self.add_segment_and_reset()
 
     def rotate_right(self):
-        if self.model.bender_angle > RIGHT_MIN_VALUE:
+        if self.test_collisions(self.model.segment_length, self.model.bender_angle-1) or\
+                self.test_boarders(self.model.segment_length, self.model.bender_angle-1):
+            pygame.event.post(pygame.event.Event(SEGMENT_OUT_OF_BOUNDARY_ALARM))
+            print("out ou boundary right")
+            print(self.model.points)
+
+        elif self.model.bender_angle > RIGHT_MIN_VALUE:
             self.model.bender_angle -= 1
+
         else:
             pygame.event.post(pygame.event.Event(ROTATE_RIGHT_ALARM))
             print("rotate right alarm")
 
     def rotate_left(self):
-        if self.model.bender_angle < LEFT_MAX_VALUE:
+        if self.test_collisions(self.model.segment_length, self.model.bender_angle+1) or \
+                self.test_boarders(self.model.segment_length, self.model.bender_angle+1):
+            pygame.event.post(pygame.event.Event(SEGMENT_OUT_OF_BOUNDARY_ALARM))
+            print("out ou boundary right")
+            print(self.model.points)
+
+        elif self.model.bender_angle < LEFT_MAX_VALUE:
             self.model.bender_angle += 1
+
         else:
             pygame.event.post(pygame.event.Event(ROTATE_LEFT_ALARM))
             print("rotate left alarm")
@@ -225,6 +252,23 @@ class Controller:
                 print(to_string)
                 self.serial.write(to_string.encode())
                 time.sleep(15)
+
+    def test_collisions(self, length, angle):
+        points_to_test = self.extract_multiple_points(length,angle)
+        for c in self.model.colliders:
+            for p in points_to_test:
+                if c.collidepoint(p):
+                    return True
+        return False
+
+    def test_boarders(self, length, angle):
+        points_to_test = self.extract_multiple_points(length, angle)
+        for p in points_to_test:
+            if p[0] > SCREEN_WIDTH or p[1] > SCREEN_HEIGHT:
+                return True
+        return False
+
+
 
     @staticmethod
     def finish():

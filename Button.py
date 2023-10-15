@@ -43,7 +43,7 @@ class Button(object):
         else:
             self.state = self.State.HOVER
 
-    def draw(self):
+    def draw_button(self):
         if self.state == self.State.IDLE:
             pygame.draw.rect(self.screen, self.color, self.rect)
             self.screen.blit(self.img, self.img.get_rect(center=self.rect.center))
