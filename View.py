@@ -1,5 +1,6 @@
 from Model import *
 import math
+import pygame
 
 
 class View:
@@ -54,7 +55,6 @@ class View:
             # self.draw_metal_line(start_position, radar_center)
             self.draw_metal_line(radar_center, (x, y))
 
-
     def draw_current_spinner(self):
 
         rotated = pygame.transform.rotate(self._model.spinner, self._model.bender_angle)
@@ -76,13 +76,22 @@ class View:
         :return: None
         """
         for button in self._model.buttons:
-            button.draw()
+            button.draw_button()
             # print("was here!")
 
     def draw_alarms(self):
         for a in self._model.alarms:
             if a.turn_on:
                 a.draw_alarm()
+
+    def draw_length_bar(self):
+        ratio = ((self._model.total_length + self._model.segment_length)
+                                                              / LINE_MAX_LENGTH)
+        pygame.draw.rect(self._model.screen, DARK_GREY, (SCREEN_WIDTH - 90, SCREEN_HEIGHT - 350 - 3, 40, 300 + 3
+                                                         ))
+        pygame.draw.rect(self._model.screen, 'green', (SCREEN_WIDTH - 90 + 3, (SCREEN_HEIGHT - 350 - 3 + (300*(1-ratio)))
+                                                       , 34,
+                                                       300 * ratio))
 
     def draw(self):
         self.draw_start_line()
@@ -93,3 +102,4 @@ class View:
         self.draw_current_spinner()
         self.draw_buttons()
         self.draw_alarms()
+        self.draw_length_bar()
