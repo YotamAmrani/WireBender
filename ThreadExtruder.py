@@ -67,7 +67,7 @@ class Controller:
 
     def add_colliders(self):
         for i in range(0,SPINNER_DISTANCE, 10):
-            self.model.colliders.append(Rect((SCREEN_WIDTH-(300-i*2))//2, (SCREEN_HEIGHT-i), 300-i*2, i))
+            self.model.colliders.append(Rect((SCREEN_WIDTH-(200-i*2))//2, (SCREEN_HEIGHT-i), 200-i*2, i))
             # pygame.draw.rect(self._model.screen, 'red', ((SCREEN_WIDTH-(300-i*2))//2, (SCREEN_HEIGHT-i), 300-i*2, i))
             # print(i)
 
@@ -244,6 +244,7 @@ class Controller:
 
     def send_to_bender(self):
         if self.serial is not None:
+            self.model.is_bending = True
             for seg in reversed(self.model.polar_points):
                 print("segment is: " + str(seg))
                 to_string = str(seg[0] // PIXEL_TO_MM) + "," + str(seg[1]) + "\n"
@@ -251,6 +252,7 @@ class Controller:
                 print(to_string)
                 self.serial.write(to_string.encode())
                 time.sleep(15)
+            self.model.is_bending = False
 
     def test_collisions(self, length, angle):
         points_to_test = self.extract_multiple_points(length,angle)

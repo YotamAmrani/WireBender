@@ -23,6 +23,7 @@ class Model:
         self.alarms = []
         self.colliders = []
         self.spinner = pygame.image.load(SPINNER_IMAGE)
+        self.is_bending = False
         self.key_0_pressed = False
         self.key_1_pressed = False
         self.key_2_pressed = False
