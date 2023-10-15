@@ -256,6 +256,15 @@ class Controller:
 
     def test_collisions(self, length, angle):
         points_to_test = self.extract_multiple_points(length,angle)
+
+        if not points_to_test:
+            radar_center = (self.model.screen.get_width() // 2, self.model.screen.get_height() - SPINNER_DISTANCE)
+            x = radar_center[0] + math.sin(math.radians(angle)) * \
+                                  (-length)
+            y = radar_center[1] + math.cos(math.radians(angle)) * \
+                                  (-length)
+            points_to_test.append(pygame.Vector2(x,y))
+
         for c in self.model.colliders:
             for p in points_to_test:
                 if c.collidepoint(p):
@@ -264,6 +273,14 @@ class Controller:
 
     def test_boarders(self, length, angle):
         points_to_test = self.extract_multiple_points(length, angle)
+        if not points_to_test:
+            radar_center = (self.model.screen.get_width() // 2, self.model.screen.get_height() - SPINNER_DISTANCE)
+            x = radar_center[0] + math.sin(math.radians(angle)) * \
+                                  (-length)
+            y = radar_center[1] + math.cos(math.radians(angle)) * \
+                                  (-length)
+            points_to_test.append(pygame.Vector2(x,y))
+
         for p in points_to_test:
             if p[0] > SCREEN_WIDTH or p[1] > SCREEN_HEIGHT:
                 return True
