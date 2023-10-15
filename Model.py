@@ -16,7 +16,7 @@ class Model:
         self.points = []
         self.polar_points = []
         self.bender_angle = 0
-        self.segment_length = SPINNER_DISTANCE
+        self.segment_length = 0
         self.total_length = 0
         self.buttons = []
         self.alarms = []

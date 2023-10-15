@@ -7,6 +7,11 @@ DARK_GREY = (125, 125, 125)
 GREY = (128, 128, 128)
 LIGHT_GREY = (200, 200, 200)
 
+
+# Serial
+BAUD_RATE = 9600
+PIXEL_TO_MM = 5
+
 # line and spinner
 LINE_WIDTH = 20
 LINE_COLOR = GREY
@@ -15,9 +20,9 @@ SPINNER_SPEED = 1
 LEFT_MAX_VALUE = 135
 RIGHT_MIN_VALUE = -135
 
-# Serial
-BAUD_RATE = 9600
-PIXEL_TO_MM = 5
+LINE_MAX_LENGTH = 150*PIXEL_TO_MM # 1000/5 = 250mm
+
+
 
 
 # screen
@@ -94,3 +99,6 @@ ADD_SEGMENT_CLICK_IMAGE_PATH = "pictures/add_segment_button_2.jpg"
 FINISH_IDLE_IMAGE_PATH = "pictures/finish_button_0.jpg"
 FINISH_HOVER_IMAGE_PATH = "pictures/finish_button_1.png"
 FINISH_CLICK_IMAGE_PATH = "pictures/finish_button_2.jpg"
+TOO_LONG_ALARM_PATH = "pictures/too long.png"
+LEFT_ALARM_PATH = "pictures/left.png"
+RIGHT_ALARM_PATH = "pictures/right.png"

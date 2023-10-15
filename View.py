@@ -30,28 +30,30 @@ class View:
         # draw_line_round_corners_polygon(screen, start_position + pygame.math.Vector2(0, 0),
         #                                 end_position + pygame.math.Vector2(0, 0), 'white', 5)
 
-    def draw_current_line(self):
+    def draw_start_line(self):
         # Draw the starting line
         start_position = pygame.math.Vector2(self._model.screen.get_width() // 2, self._model.screen.get_height())
         end_position = pygame.math.Vector2(self._model.screen.get_width() // 2,
-                                           self._model.screen.get_height() - self._model.segment_length)
+                                           self._model.screen.get_height() - SPINNER_DISTANCE)
         self._model.screen.fill(SCREEN_COLOR)
         self.draw_metal_line(start_position, end_position)
 
+    def draw_current_line(self):
+
         # Turn the current line segment
-        if self._model.segment_length > SPINNER_DISTANCE:
-            self._model.screen.fill(SCREEN_COLOR)
+        if self._model.segment_length > 0:
+            # self._model.screen.fill(SCREEN_COLOR)
 
             radar_center = (self._model.screen.get_width() // 2, self._model.screen.get_height() - SPINNER_DISTANCE)
             x = radar_center[0] + math.sin(math.radians(self._model.bender_angle)) * \
-                                  (SPINNER_DISTANCE - self._model.segment_length)
+                                  (-self._model.segment_length)
             y = radar_center[1] + math.cos(math.radians(self._model.bender_angle)) * \
-                                  (SPINNER_DISTANCE - self._model.segment_length)
+                                  (-self._model.segment_length)
 
             # then render the line radar->(x,y)
-            self.draw_metal_line(start_position, radar_center)
+            # self.draw_metal_line(start_position, radar_center)
             self.draw_metal_line(radar_center, (x, y))
-            # pygame.draw.line(screen, Color("black"), radar_center, (x, y), 1)
+
 
     def draw_current_spinner(self):
 
@@ -83,6 +85,7 @@ class View:
                 a.draw_alarm()
 
     def draw(self):
+        self.draw_start_line()
         self.draw_current_line()
         # extract_multiple_points(self._model.screen)
         if self._model.points:

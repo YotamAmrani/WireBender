@@ -61,8 +61,9 @@ class Controller:
                                  FINISH_CLICK_IMAGE_PATH, True)
 
     def load_alarms(self):
-        self.model.append_alarm(ALARM_POSITION, ALARM_SIZE, EXTRUDE_IDLE_IMAGE_PATH, ROTATE_RIGHT_ALARM)
-        self.model.append_alarm(ALARM_POSITION, ALARM_SIZE, EXTRUDE_CLICK_IMAGE_PATH, ROTATE_LEFT_ALARM)
+        self.model.append_alarm(ALARM_POSITION, ALARM_SIZE, RIGHT_ALARM_PATH, ROTATE_RIGHT_ALARM)
+        self.model.append_alarm(ALARM_POSITION, ALARM_SIZE, LEFT_ALARM_PATH, ROTATE_LEFT_ALARM)
+        self.model.append_alarm(ALARM_POSITION, ALARM_SIZE, TOO_LONG_ALARM_PATH, SEGMENT_TOO_LONG)
 
     def update(self, dt):
         """
@@ -89,7 +90,8 @@ class Controller:
                 self.model.alarms[0].turn_on = True
             elif event.type == ROTATE_LEFT_ALARM:
                 self.model.alarms[1].turn_on = True
-
+            elif event.type == SEGMENT_TOO_LONG:
+                self.model.alarms[2].turn_on = True
 
         global key_0_pressed
         global key_1_pressed
@@ -98,7 +100,7 @@ class Controller:
         keys = pygame.key.get_pressed()
         if keys[pygame.K_UP]:
             self.model.segment_length += 1
-        elif keys[pygame.K_DOWN] and self.model.segment_length > SPINNER_DISTANCE:
+        elif keys[pygame.K_DOWN] and self.model.segment_length > 0:
             self.model.segment_length -= 1
         if (keys[K_LEFT]) and self.model.bender_angle < LEFT_MAX_VALUE:
             self.model.bender_angle += 1
@@ -142,7 +144,7 @@ class Controller:
                                     self.model.screen.get_height() - SPINNER_DISTANCE)
             # points.append(origin)
             edge_point = pygame.Vector2(0, 0)
-            edge_point.from_polar((self.model.segment_length - SPINNER_DISTANCE, -(90 + self.model.bender_angle)))
+            edge_point.from_polar((self.model.segment_length , -(90 + self.model.bender_angle)))
             edge_point += origin
 
             # new_polar_points = [origin.as_polar()] + polar_points
@@ -162,28 +164,37 @@ class Controller:
                 # print(self.model.points)
 
     def add_segment(self):
-        current_segment = (self.model.segment_length - SPINNER_DISTANCE, self.model.bender_angle)
+        current_segment = (self.model.segment_length , self.model.bender_angle)
+        print("adding: " + str(self.model.segment_length))
         if current_segment[0] != 0 and current_segment[1] != 0:
-            self.model.total_length += self.model.segment_length - SPINNER_DISTANCE
+            self.model.total_length += self.model.segment_length
             self.model.polar_points = [current_segment] + self.model.polar_points
         print(self.model.polar_points)
 
     def reset_state(self):
         self.model.bender_angle = 0
-        self.model.segment_length = SPINNER_DISTANCE
+        self.model.segment_length = 0
 
     def revert(self):
         if self.model.polar_points:
             self.model.segment_length, self.model.bender_angle = self.model.polar_points[0]
             self.model.total_length -= self.model.segment_length
             self.model.polar_points = self.model.polar_points[1:]
-            print(self.model.total_length)
+            # print(self.model.total_length)
+            print("revert: " + str(self.model.polar_points))
+            print("cuurent: ")
+            print(self.model.segment_length, self.model.bender_angle)
         else:
-            self.model.segment_length, self.model.bender_angle = (SPINNER_DISTANCE, 0)
+            self.reset_state()
 
     def extrude(self):
         if self.model.bender_angle == 0:
-            self.model.segment_length += 1
+            if self.model.total_length + self.model.segment_length < LINE_MAX_LENGTH:
+                self.model.segment_length += 1
+            else:
+                pygame.event.post(pygame.event.Event(SEGMENT_TOO_LONG))
+                print("segment is too long alarm")
+
         else:
             self.add_segment_and_reset()
 
