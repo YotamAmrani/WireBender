@@ -8,7 +8,6 @@ import time
 import serial
 
 
-# TODO: setup boarder to the points movement
 # TODO: setup maybe minimal length to the wire after large rotation
 # TODO: differ between one time press button and long press
 
