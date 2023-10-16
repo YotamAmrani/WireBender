@@ -90,7 +90,7 @@ class View:
         bar_offset = 60
 
         font = pygame.font.Font(FONT_PATH, 24)
-        text = font.render('Segment capacity', True, 'black', SCREEN_COLOR)
+        text = font.render('Capacity', True, 'black', SCREEN_COLOR)
         textRect = text.get_rect()
         textRect.left = bar_offset
         textRect.top = SCREEN_HEIGHT - bar_offset - bar_hieght -5

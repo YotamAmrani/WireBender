@@ -64,9 +64,9 @@ class Controller:
         # self.model.append_button(self.add_segment_and_reset, ADD_SEGMENT_BUTTON_POSITION, ADD_SEGMENT_BUTTON_SIZE,
         #                          ADD_SEGMENT_IDLE_IMAGE_PATH, ADD_SEGMENT_HOVER_IMAGE_PATH,
         #                          ADD_SEGMENT_CLICK_IMAGE_PATH, True)
-        self.model.append_button(self.finish, FINISH_BUTTON_POSITION, FINISH_BUTTON_SIZE,
-                                 FINISH_IDLE_IMAGE_PATH, FINISH_HOVER_IMAGE_PATH,
-                                 FINISH_CLICK_IMAGE_PATH, True)
+        # self.model.append_button(self.finish, FINISH_BUTTON_POSITION, FINISH_BUTTON_SIZE,
+        #                          FINISH_IDLE_IMAGE_PATH, FINISH_HOVER_IMAGE_PATH,
+        #                          FINISH_CLICK_IMAGE_PATH, True)
 
     def load_alarms(self):
         self.model.append_alarm(ALARM_POSITION, ALARM_SIZE, RIGHT_ALARM_PATH, ROTATE_RIGHT_ALARM)
@@ -76,7 +76,7 @@ class Controller:
 
     def add_colliders(self):
         for i in range(0,SPINNER_DISTANCE, 10):
-            self.model.colliders.append(Rect((SCREEN_WIDTH-(200-i*2))//2, (SCREEN_HEIGHT-i), 200-i*2, i))
+            self.model.colliders.append(Rect((SCREEN_WIDTH-(350-i*2))//2, (SCREEN_HEIGHT-i), 350-i*2, i))
             # pygame.draw.rect(self._model.screen, 'red', ((SCREEN_WIDTH-(300-i*2))//2, (SCREEN_HEIGHT-i), 300-i*2, i))
             # print(i)
 

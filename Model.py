@@ -32,9 +32,9 @@ class Model:
         # set the buttons and make an array of them
         current_button = Button(self.screen, image_position, image_size
                                 ,button_function, press_once)
-        current_button.load_image(Button.State.IDLE, idle_image_path)
-        current_button.load_image(Button.State.HOVER, hover_image_path)
-        current_button.load_image(Button.State.CLICK, click_image_path)
+        current_button.load_image(idle_image_path)
+        # current_button.load_image(hover_image_path)
+        # current_button.load_image(click_image_path)
         self.buttons.append(current_button)
 
     def append_alarm(self,image_position, image_size,image_path, event_id):
