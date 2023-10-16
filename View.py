@@ -85,13 +85,39 @@ class View:
                 a.draw_alarm()
 
     def draw_length_bar(self):
+        bar_width = 200
+        bar_hieght = 30
+        bar_offset = 60
+
+        font = pygame.font.Font(FONT_PATH, 24)
+        text = font.render('Segment capacity', True, 'black', SCREEN_COLOR)
+        textRect = text.get_rect()
+        textRect.left = bar_offset
+        textRect.top = SCREEN_HEIGHT - bar_offset - bar_hieght -5
+
+        pygame.draw.rect(self._model.screen, BLACK,
+                         (bar_offset-10, textRect.top -10, bar_width +25, bar_hieght+50
+                          ), 8)
+        pygame.draw.rect(self._model.screen, SCREEN_COLOR,
+                         (bar_offset - 10, textRect.top - 10, bar_width + 25, bar_hieght + 50
+                          ))
+
+        self._model.screen.blit(text, textRect)
+
+
+
         ratio = ((self._model.total_length + self._model.segment_length)
                                                               / LINE_MAX_LENGTH)
-        pygame.draw.rect(self._model.screen, DARK_GREY, (SCREEN_WIDTH - 90, SCREEN_HEIGHT - 350 - 3, 40, 300 + 3
+
+        pygame.draw.rect(self._model.screen, 'grey', (bar_offset, SCREEN_HEIGHT - bar_offset, bar_width+6, bar_hieght
                                                          ))
-        pygame.draw.rect(self._model.screen, 'green', (SCREEN_WIDTH - 90 + 3, (SCREEN_HEIGHT - 350 - 3 + (300*(1-ratio)))
-                                                       , 34,
-                                                       300 * ratio))
+        if ratio < 0.95:
+            pygame.draw.rect(self._model.screen, 'green',
+                             (bar_offset+3,SCREEN_HEIGHT - bar_offset+3, bar_width*ratio, bar_hieght-6))
+        elif ratio <=1:
+            pygame.draw.rect(self._model.screen, 'red',
+                             (bar_offset + 3, SCREEN_HEIGHT - bar_offset + 3, bar_width * ratio, bar_hieght - 6))
+
 
     def collision_box(self):
         # get the start point
@@ -105,7 +131,6 @@ class View:
             pygame.draw.rect(self._model.screen, 'red',
                              c)
             print(c)
-
 
 
     def draw(self):

@@ -1,15 +1,18 @@
 from Constants import *
-from Button import *
 import sys
 import pygame
 from View import *
 from Model import *
 import time
 import serial
+import logging
 
 
 # TODO: setup maybe minimal length to the wire after large rotation
 # TODO: differ between one time press button and long press
+# TODO: add logger to the system
+# TODO: add currently bending banner
+# TODO: add automatic reset to welcome page
 
 
 # Drawing with rounded corners
@@ -17,6 +20,12 @@ import serial
 
 # Rotating an object:
 # https://stackoverflow.com/questions/59902716/how-to-rotate-element-around-pivot-point-in-pygame
+
+
+# Time rotating logging
+# https://stackoverflow.com/questions/44718204/python-how-to-create-log-file-everyday-using-logging-module
+
+logging.basicConfig(filename='logging.log', level=logging.DEBUG)
 
 
 class Controller:
@@ -134,7 +143,8 @@ class Controller:
             pygame.event.post(pygame.event.Event(QUIT))
 
         self.model.points = self.extract_multiple_points(self.model.segment_length, self.model.bender_angle)
-        self.check_buttons()
+        if not self.model.is_bending:
+            self.check_buttons()
 
     def check_buttons(self):
         """
@@ -215,7 +225,6 @@ class Controller:
                 self.test_boarders(self.model.segment_length, self.model.bender_angle-1):
             pygame.event.post(pygame.event.Event(SEGMENT_OUT_OF_BOUNDARY_ALARM))
             print("out ou boundary right")
-            print(self.model.points)
 
         elif self.model.bender_angle > RIGHT_MIN_VALUE:
             self.model.bender_angle -= 1
@@ -229,7 +238,6 @@ class Controller:
                 self.test_boarders(self.model.segment_length, self.model.bender_angle+1):
             pygame.event.post(pygame.event.Event(SEGMENT_OUT_OF_BOUNDARY_ALARM))
             print("out ou boundary right")
-            print(self.model.points)
 
         elif self.model.bender_angle < LEFT_MAX_VALUE:
             self.model.bender_angle += 1
@@ -252,6 +260,12 @@ class Controller:
                 print(to_string)
                 self.serial.write(to_string.encode())
                 time.sleep(15)
+
+            # reset to new plan
+            self.model.points = []
+            self.model.polar_points = []
+            self.reset_state()
+
             self.model.is_bending = False
 
     def test_collisions(self, length, angle):
@@ -285,8 +299,6 @@ class Controller:
             if p[0] > SCREEN_WIDTH or p[1] > SCREEN_HEIGHT:
                 return True
         return False
-
-
 
     @staticmethod
     def finish():

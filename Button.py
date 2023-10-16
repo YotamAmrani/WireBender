@@ -8,11 +8,11 @@ class Button(object):
         CLICK = 2
         HOVER = 3
 
-    def __init__(self, screen, pos, size, color, coloron, triggered_function, press_once=False):
+    def __init__(self, screen, pos, size, triggered_function, press_once=False):
         self.pos = pos
         self.size = size
-        self.color = color
-        self.coloron = coloron
+        # self.color = color
+        # self.coloron = coloron
         self.img = None
         self.imghov = None
         self.imgon = None
@@ -45,13 +45,13 @@ class Button(object):
 
     def draw_button(self):
         if self.state == self.State.IDLE:
-            pygame.draw.rect(self.screen, self.color, self.rect)
+            # pygame.draw.rect(self.screen, self.color, self.rect)
             self.screen.blit(self.img, self.img.get_rect(center=self.rect.center))
         elif self.state == self.State.CLICK:
-            pygame.draw.rect(self.screen, self.coloron, self.rect)
+            # pygame.draw.rect(self.screen, self.coloron, self.rect)
             self.screen.blit(self.imgon, self.imgon.get_rect(center=self.rect.center))
         elif self.state == self.State.HOVER:
-            pygame.draw.rect(self.screen, self.color, self.rect)
+            # pygame.draw.rect(self.screen, self.color, self.rect)
             self.screen.blit(self.imghov, self.imghov.get_rect(center=self.rect.center))
 
     def load_image(self, image_state, image_path: str):
