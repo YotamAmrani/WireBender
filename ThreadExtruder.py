@@ -7,7 +7,6 @@ import time
 import serial
 import logging
 
-
 # TODO: setup maybe minimal length to the wire after large rotation
 # TODO: differ between one time press button and long press
 # TODO: add logger to the system
@@ -52,15 +51,27 @@ class Controller:
 
     def load_buttons(self):
         self.model.append_button(self.extrude, EXTRUDE_BUTTON_POSITION, EXTRUDE_BUTTON_SIZE,
-                                 EXTRUDE_IDLE_IMAGE_PATH, EXTRUDE_HOVER_IMAGE_PATH, EXTRUDE_CLICK_IMAGE_PATH)
+                                 EXTRUDE_IDLE_IMAGE_PATH, EXTRUDE_CLICK_IMAGE_PATH)
         self.model.append_button(self.revert, REVERT_BUTTON_POSITION, REVERT_BUTTON_SIZE,
-                                 REVERT_IDLE_IMAGE_PATH, REVERT_HOVER_IMAGE_PATH, REVERT_CLICK_IMAGE_PATH, True)
+                                 REVERT_IDLE_IMAGE_PATH, REVERT_CLICK_IMAGE_PATH, True)
         self.model.append_button(self.rotate_right, ROTATE_RIGHT_BUTTON_POSITION, ROTATE_RIGHT_BUTTON_SIZE,
-                                 ROTATE_RIGHT_IDLE_IMAGE_PATH, ROTATE_RIGHT_HOVER_IMAGE_PATH,
+                                 ROTATE_RIGHT_IDLE_IMAGE_PATH,
                                  ROTATE_RIGHT_CLICK_IMAGE_PATH)
         self.model.append_button(self.rotate_left, ROTATE_LEFT_BUTTON_POSITION, ROTATE_LEFT_BUTTON_SIZE,
-                                 ROTATE_LEFT_IDLE_IMAGE_PATH, ROTATE_LEFT_HOVER_IMAGE_PATH,
+                                 ROTATE_LEFT_IDLE_IMAGE_PATH,
                                  ROTATE_LEFT_CLICK_IMAGE_PATH)
+
+        self.model.append_button(self.send_to_bender, SEND_BUTTON_POSITION, ROTATE_LEFT_BUTTON_SIZE,
+                                 SEND_IDLE_IMAGE_PATH,
+                                 SEND_CLICK_IMAGE_PATH)
+
+        self.model.append_button(self.display_info, INFO_BUTTON_POSITION, ROTATE_LEFT_BUTTON_SIZE,
+                                 INFO_IDLE_IMAGE_PATH,
+                                 INFO_CLICK_IMAGE_PATH)
+
+        self.model.append_button(self.close_info_screen, CLOSE_INFO_BUTTON_POSITION, ROTATE_LEFT_BUTTON_SIZE,
+                                 CLOSE_INFO_IDLE_IMAGE_PATH,
+                                 CLOSE_INFO_CLICK_IMAGE_PATH)
         # self.model.append_button(self.add_segment_and_reset, ADD_SEGMENT_BUTTON_POSITION, ADD_SEGMENT_BUTTON_SIZE,
         #                          ADD_SEGMENT_IDLE_IMAGE_PATH, ADD_SEGMENT_HOVER_IMAGE_PATH,
         #                          ADD_SEGMENT_CLICK_IMAGE_PATH, True)
@@ -75,8 +86,12 @@ class Controller:
         self.model.append_alarm(ALARM_POSITION, ALARM_SIZE, TOO_LONG_ALARM_PATH, SEGMENT_TOO_LONG_ALARM)
 
     def add_colliders(self):
-        for i in range(0,SPINNER_DISTANCE, 10):
-            self.model.colliders.append(Rect((SCREEN_WIDTH-(350-i*2))//2, (SCREEN_HEIGHT-i), 350-i*2, i))
+        # for i in range(0,SPINNER_DISTANCE, 10):
+        #     self.model.colliders.append(Rect((SCREEN_WIDTH-(420-i*2))//2, (SCREEN_HEIGHT-i), 420-i*2, i))
+        for i in range(SPINNER_DISTANCE, 0, -10):
+            self.model.colliders.append(
+                Rect((SCREEN_WIDTH - (SPINNER_DISTANCE - i) * 2) // 2, (SCREEN_HEIGHT - i), (SPINNER_DISTANCE - i) * 2,
+                     i))
             # pygame.draw.rect(self._model.screen, 'red', ((SCREEN_WIDTH-(300-i*2))//2, (SCREEN_HEIGHT-i), 300-i*2, i))
             # print(i)
 
@@ -161,7 +176,7 @@ class Controller:
                                     self.model.screen.get_height() - SPINNER_DISTANCE)
             # points.append(origin)
             edge_point = pygame.Vector2(0, 0)
-            edge_point.from_polar((length , -(90 + angle)))
+            edge_point.from_polar((length, -(90 + angle)))
             edge_point += origin
 
             # new_polar_points = [origin.as_polar()] + polar_points
@@ -179,10 +194,10 @@ class Controller:
                 current_angle += self.model.polar_points[p][1]
 
         return points
-                # print(self.model.points)
+        # print(self.model.points)
 
     def add_segment(self):
-        current_segment = (self.model.segment_length , self.model.bender_angle)
+        current_segment = (self.model.segment_length, self.model.bender_angle)
         print("adding: " + str(self.model.segment_length))
         if current_segment[0] != 0 and current_segment[1] != 0:
             self.model.total_length += self.model.segment_length
@@ -206,8 +221,8 @@ class Controller:
             self.reset_state()
 
     def extrude(self):
-        if self.test_collisions(self.model.segment_length + 1,self.model.bender_angle) or \
-                self.test_boarders(self.model.segment_length + 1,self.model.bender_angle):
+        if self.test_collisions(self.model.segment_length + 1, self.model.bender_angle) or \
+                self.test_boarders(self.model.segment_length + 1, self.model.bender_angle):
             pygame.event.post(pygame.event.Event(SEGMENT_OUT_OF_BOUNDARY_ALARM))
 
         elif self.model.bender_angle == 0:
@@ -221,8 +236,8 @@ class Controller:
             self.add_segment_and_reset()
 
     def rotate_right(self):
-        if self.test_collisions(self.model.segment_length, self.model.bender_angle-1) or\
-                self.test_boarders(self.model.segment_length, self.model.bender_angle-1):
+        if self.test_collisions(self.model.segment_length, self.model.bender_angle - 1) or \
+                self.test_boarders(self.model.segment_length, self.model.bender_angle - 1):
             pygame.event.post(pygame.event.Event(SEGMENT_OUT_OF_BOUNDARY_ALARM))
             print("out ou boundary right")
 
@@ -234,8 +249,8 @@ class Controller:
             print("rotate right alarm")
 
     def rotate_left(self):
-        if self.test_collisions(self.model.segment_length, self.model.bender_angle+1) or \
-                self.test_boarders(self.model.segment_length, self.model.bender_angle+1):
+        if self.test_collisions(self.model.segment_length, self.model.bender_angle + 1) or \
+                self.test_boarders(self.model.segment_length, self.model.bender_angle + 1):
             pygame.event.post(pygame.event.Event(SEGMENT_OUT_OF_BOUNDARY_ALARM))
             print("out ou boundary right")
 
@@ -269,7 +284,7 @@ class Controller:
             self.model.is_bending = False
 
     def test_collisions(self, length, angle):
-        points_to_test = self.extract_multiple_points(length,angle)
+        points_to_test = self.extract_multiple_points(length, angle)
 
         if not points_to_test:
             radar_center = (self.model.screen.get_width() // 2, self.model.screen.get_height() - SPINNER_DISTANCE)
@@ -277,7 +292,7 @@ class Controller:
                                   (-length)
             y = radar_center[1] + math.cos(math.radians(angle)) * \
                                   (-length)
-            points_to_test.append(pygame.Vector2(x,y))
+            points_to_test.append(pygame.Vector2(x, y))
 
         for c in self.model.colliders:
             for p in points_to_test:
@@ -293,12 +308,18 @@ class Controller:
                                   (-length)
             y = radar_center[1] + math.cos(math.radians(angle)) * \
                                   (-length)
-            points_to_test.append(pygame.Vector2(x,y))
+            points_to_test.append(pygame.Vector2(x, y))
 
         for p in points_to_test:
             if p[0] > SCREEN_WIDTH or p[1] > SCREEN_HEIGHT:
                 return True
         return False
+
+    def display_info(self):
+        self.model.info_turn_on = True
+
+    def close_info_screen(self):
+        self.model.info_turn_on = False
 
     @staticmethod
     def finish():

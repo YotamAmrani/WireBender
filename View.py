@@ -36,7 +36,7 @@ class View:
         start_position = pygame.math.Vector2(self._model.screen.get_width() // 2, self._model.screen.get_height())
         end_position = pygame.math.Vector2(self._model.screen.get_width() // 2,
                                            self._model.screen.get_height() - SPINNER_DISTANCE)
-        self._model.screen.fill(SCREEN_COLOR)
+
         self.draw_metal_line(start_position, end_position)
 
     def draw_current_line(self):
@@ -70,14 +70,21 @@ class View:
         for i in range(len(self._model.points) - 1):
             self.draw_metal_line(self._model.points[i + 1], self._model.points[i])
 
-    def draw_buttons(self):
+    def draw_buttons_panel(self):
         """
         Check all buttons states. # for each button, check if it was pressed
         :return: None
         """
-        for button in self._model.buttons:
-            button.draw_button()
+        pygame.draw.rect(self._model.screen, 'white',
+                         (0, SCREEN_HEIGHT - BUTTONS_PANEL_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT
+                          ))
+
+
+        for b in range(len(self._model.buttons)-1):
+            self._model.buttons[b].draw_button()
             # print("was here!")
+
+        self.draw_capacity_buffer()
 
     def draw_alarms(self):
         for a in self._model.alarms:
@@ -89,35 +96,54 @@ class View:
         bar_hieght = 30
         bar_offset = 60
 
-        font = pygame.font.Font(FONT_PATH, 24)
-        text = font.render('Capacity', True, 'black', SCREEN_COLOR)
-        textRect = text.get_rect()
-        textRect.left = bar_offset
-        textRect.top = SCREEN_HEIGHT - bar_offset - bar_hieght -5
-
-        pygame.draw.rect(self._model.screen, BLACK,
-                         (bar_offset-10, textRect.top -10, bar_width +25, bar_hieght+50
-                          ), 8)
-        pygame.draw.rect(self._model.screen, SCREEN_COLOR,
-                         (bar_offset - 10, textRect.top - 10, bar_width + 25, bar_hieght + 50
-                          ))
-
-        self._model.screen.blit(text, textRect)
-
-
+        # font = pygame.font.Font(FONT_PATH, 24)
+        # text = font.render('Capacity', True, 'black', SCREEN_COLOR)
+        # textRect = text.get_rect()
+        # textRect.left = bar_offset
+        # textRect.top = SCREEN_HEIGHT - bar_offset - bar_hieght - 5
+        #
+        # pygame.draw.rect(self._model.screen, BLACK,
+        #                  (bar_offset - 10, textRect.top - 10, bar_width + 25, bar_hieght + 50
+        #                   ), 8)
+        # pygame.draw.rect(self._model.screen, SCREEN_COLOR,
+        #                  (bar_offset - 10, textRect.top - 10, bar_width + 25, bar_hieght + 50
+        #                   ))
+        #
+        # self._model.screen.blit(text, textRect)
 
         ratio = ((self._model.total_length + self._model.segment_length)
-                                                              / LINE_MAX_LENGTH)
+                 / LINE_MAX_LENGTH)
 
-        pygame.draw.rect(self._model.screen, 'grey', (bar_offset, SCREEN_HEIGHT - bar_offset, bar_width+6, bar_hieght
-                                                         ))
-        if ratio < 0.95:
-            pygame.draw.rect(self._model.screen, 'green',
-                             (bar_offset+3,SCREEN_HEIGHT - bar_offset+3, bar_width*ratio, bar_hieght-6))
-        elif ratio <=1:
-            pygame.draw.rect(self._model.screen, 'red',
-                             (bar_offset + 3, SCREEN_HEIGHT - bar_offset + 3, bar_width * ratio, bar_hieght - 6))
+        pygame.draw.rect(self._model.screen, BUFFER_YELLOW,
+                         (bar_offset, SCREEN_HEIGHT - bar_offset, bar_width + 6, bar_hieght
+                          ))
 
+        pygame.draw.rect(self._model.screen, BUFFER_RED,
+                         (bar_offset + 3, SCREEN_HEIGHT - bar_offset + 3, bar_width * ratio, bar_hieght - 6))
+        # if ratio < 0.95:
+        #     pygame.draw.rect(self._model.screen, BUFFER_RED,
+        #                      (bar_offset + 3, SCREEN_HEIGHT - bar_offset + 3, bar_width * ratio, bar_hieght - 6))
+        # elif ratio <= 1:
+        #     pygame.draw.rect(self._model.screen, 'red',
+        #                      (bar_offset + 3, SCREEN_HEIGHT - bar_offset + 3, bar_width * ratio, bar_hieght - 6))
+
+    def draw_capacity_buffer(self):
+        bar_top = SCREEN_HEIGHT - 94
+        bar_left = 163
+        bar_width = 225
+        bar_hieght = 35
+
+        ratio = ((self._model.total_length + self._model.segment_length)
+                 / LINE_MAX_LENGTH)
+        if ratio < 0.02:
+            ratio = 0.02
+
+        pygame.draw.rect(self._model.screen, BUFFER_YELLOW,
+                         (bar_left, bar_top, bar_width + 6, bar_hieght
+                          ))
+
+        pygame.draw.rect(self._model.screen, BUFFER_RED,
+                         (bar_left + 8, bar_top + 8, bar_width * ratio, bar_hieght - 16))
 
     def collision_box(self):
         # get the start point
@@ -126,21 +152,41 @@ class View:
 
         # for i in range(0,SPINNER_DISTANCE, 10):
         #     pygame.draw.rect(self._model.screen, 'red', ((SCREEN_WIDTH-(300-i*2))//2, (SCREEN_HEIGHT-i), 300-i*2, i))
-            # print(i)
+        # print(i)
         for c in self._model.colliders:
-            pygame.draw.rect(self._model.screen, 'red',
-                             c)
+            pygame.draw.rect(self._model.screen, 'red', c)
             print(c)
+
+    @staticmethod
+    def scale_image(image):
+        size = image.get_size()
+        size = (size[0] // CONVERSION_FACTOR, size[1] // CONVERSION_FACTOR)
+        return pygame.transform.scale(image, size)
+
+    def draw_screen(self):
+        temp = self.scale_image(self._model.screen_image)
+        self._model.screen.blit(temp,
+                                temp.get_rect(center=(self._model.screen.get_width() // 2,
+                                                      self._model.screen.get_height() // 2)))
+
+    def draw_info_modal(self):
+        temp = self.scale_image(self._model.info_modal)
+        self._model.screen.blit(temp,
+                                temp.get_rect())
+        self._model.buttons[-1].draw_button()
 
 
     def draw(self):
+        self._model.screen.fill(SCREEN_COLOR)
+        # self.draw_screen()
         self.draw_start_line()
         self.draw_current_line()
         # extract_multiple_points(self._model.screen)
         if self._model.points:
             self.draw_multiple_lines()
         self.draw_current_spinner()
-        self.draw_buttons()
+        self.draw_buttons_panel()
         self.draw_alarms()
-        self.draw_length_bar()
+        if self._model.info_turn_on:
+            self.draw_info_modal()
         # self.collision_box()
