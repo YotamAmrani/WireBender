@@ -26,16 +26,20 @@ class Model:
         self.capacity_buffer = pygame.image.load(CAPACITY_IMAGE_PATH)
         self.screen_image = pygame.image.load(SCREEN_IMAGE)
         self.info_modal = pygame.image.load(INFO_SCREEN_IMAGE_PATH)
+        self.pending_screen = [pygame.image.load(PLEASE_WAIT_SCREEN_0),pygame.image.load(PLEASE_WAIT_SCREEN_1)]
+        self.current_pending_screen = 0
+        self.pending_screen_timer = time.time()
         self.info_turn_on = False
         self.is_bending = False
+        self.current_segment_sent = 0
         self.key_0_pressed = False
         self.key_1_pressed = False
         self.key_2_pressed = False
 
-    def append_button(self, button_function, image_position, image_size, idle_image_path, click_image_path,
+    def append_button(self,name, button_function, image_position, image_size, idle_image_path, click_image_path,
                       press_once=False):
         # set the buttons and make an array of them
-        current_button = Button(self.screen, image_position, image_size
+        current_button = Button(name, self.screen, image_position, image_size
                                 , button_function, press_once)
         current_button.load_image(Button.State.IDLE, idle_image_path)
         # current_button.load_image(hover_image_path)

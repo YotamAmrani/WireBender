@@ -79,8 +79,7 @@ class View:
                          (0, SCREEN_HEIGHT - BUTTONS_PANEL_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT
                           ))
 
-
-        for b in range(len(self._model.buttons)-1):
+        for b in range(len(self._model.buttons) - 1):
             self._model.buttons[b].draw_button()
             # print("was here!")
 
@@ -175,6 +174,16 @@ class View:
                                 temp.get_rect())
         self._model.buttons[-1].draw_button()
 
+    def draw_pending_screen(self):
+
+        if time.time() - self._model.pending_screen_timer > 0.5:
+            self._model.pending_screen_timer = time.time()
+            self._model.current_pending_screen = (self._model.current_pending_screen + 1) % 2
+
+        temp = self.scale_image(self._model.pending_screen[self._model.current_pending_screen])
+        self._model.screen.blit(temp,
+                                temp.get_rect(center=(self._model.screen.get_width() // 2,
+                                                      self._model.screen.get_height() // 2)))
 
     def draw(self):
         self._model.screen.fill(SCREEN_COLOR)
@@ -189,4 +198,6 @@ class View:
         self.draw_alarms()
         if self._model.info_turn_on:
             self.draw_info_modal()
-        # self.collision_box()
+        if self._model.is_bending:
+            self.draw_pending_screen()
+            # self.collision_box()

@@ -9,7 +9,8 @@ class Button(object):
         CLICK = 2
         HOVER = 3
 
-    def __init__(self, screen, pos, size, triggered_function, press_once=False):
+    def __init__(self,name, screen, pos, size, triggered_function, press_once=False):
+        self.name = name
         self.pos = pos
         self.size = size
         # self.color = color

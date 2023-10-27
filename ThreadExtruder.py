@@ -50,28 +50,30 @@ class Controller:
             self.serial = None
 
     def load_buttons(self):
-        self.model.append_button(self.extrude, EXTRUDE_BUTTON_POSITION, EXTRUDE_BUTTON_SIZE,
+        self.model.append_button("PRESS", self.extrude, EXTRUDE_BUTTON_POSITION, EXTRUDE_BUTTON_SIZE,
                                  EXTRUDE_IDLE_IMAGE_PATH, EXTRUDE_CLICK_IMAGE_PATH)
-        self.model.append_button(self.revert, REVERT_BUTTON_POSITION, REVERT_BUTTON_SIZE,
+        self.model.append_button("REVERT", self.revert, REVERT_BUTTON_POSITION, REVERT_BUTTON_SIZE,
                                  REVERT_IDLE_IMAGE_PATH, REVERT_CLICK_IMAGE_PATH, True)
-        self.model.append_button(self.rotate_right, ROTATE_RIGHT_BUTTON_POSITION, ROTATE_RIGHT_BUTTON_SIZE,
+        self.model.append_button("ROTATE RIGHT", self.rotate_right, ROTATE_RIGHT_BUTTON_POSITION,
+                                 ROTATE_RIGHT_BUTTON_SIZE,
                                  ROTATE_RIGHT_IDLE_IMAGE_PATH,
                                  ROTATE_RIGHT_CLICK_IMAGE_PATH)
-        self.model.append_button(self.rotate_left, ROTATE_LEFT_BUTTON_POSITION, ROTATE_LEFT_BUTTON_SIZE,
+        self.model.append_button("ROTATE LEFT", self.rotate_left, ROTATE_LEFT_BUTTON_POSITION, ROTATE_LEFT_BUTTON_SIZE,
                                  ROTATE_LEFT_IDLE_IMAGE_PATH,
                                  ROTATE_LEFT_CLICK_IMAGE_PATH)
 
-        self.model.append_button(self.send_to_bender, SEND_BUTTON_POSITION, ROTATE_LEFT_BUTTON_SIZE,
+        self.model.append_button("SEND", self.send_to_bender, SEND_BUTTON_POSITION, ROTATE_LEFT_BUTTON_SIZE,
                                  SEND_IDLE_IMAGE_PATH,
-                                 SEND_CLICK_IMAGE_PATH)
+                                 SEND_CLICK_IMAGE_PATH, True)
 
-        self.model.append_button(self.display_info, INFO_BUTTON_POSITION, ROTATE_LEFT_BUTTON_SIZE,
+        self.model.append_button("INFO", self.display_info, INFO_BUTTON_POSITION, ROTATE_LEFT_BUTTON_SIZE,
                                  INFO_IDLE_IMAGE_PATH,
-                                 INFO_CLICK_IMAGE_PATH)
+                                 INFO_CLICK_IMAGE_PATH, True)
 
-        self.model.append_button(self.close_info_screen, CLOSE_INFO_BUTTON_POSITION, ROTATE_LEFT_BUTTON_SIZE,
+        self.model.append_button("CLOSE INFO", self.close_info_screen, CLOSE_INFO_BUTTON_POSITION,
+                                 ROTATE_LEFT_BUTTON_SIZE,
                                  CLOSE_INFO_IDLE_IMAGE_PATH,
-                                 CLOSE_INFO_CLICK_IMAGE_PATH)
+                                 CLOSE_INFO_CLICK_IMAGE_PATH, True)
         # self.model.append_button(self.add_segment_and_reset, ADD_SEGMENT_BUTTON_POSITION, ADD_SEGMENT_BUTTON_SIZE,
         #                          ADD_SEGMENT_IDLE_IMAGE_PATH, ADD_SEGMENT_HOVER_IMAGE_PATH,
         #                          ADD_SEGMENT_CLICK_IMAGE_PATH, True)
@@ -158,8 +160,8 @@ class Controller:
             pygame.event.post(pygame.event.Event(QUIT))
 
         self.model.points = self.extract_multiple_points(self.model.segment_length, self.model.bender_angle)
-        if not self.model.is_bending:
-            self.check_buttons()
+
+        self.check_buttons()
 
     def check_buttons(self):
         """
@@ -167,7 +169,11 @@ class Controller:
         :return: None
         """
         for button in self.model.buttons:
-            button.update()
+            if self.model.is_bending and button.name == "SEND":
+                button.update()
+                self.send_to_bender()
+            elif not self.model.is_bending:
+                button.update()
 
     def extract_multiple_points(self, length, angle):
         points = []
@@ -266,22 +272,40 @@ class Controller:
         self.reset_state()
 
     def send_to_bender(self):
-        if self.serial is not None:
+        if not self.model.is_bending:
             self.model.is_bending = True
-            for seg in reversed(self.model.polar_points):
-                print("segment is: " + str(seg))
-                to_string = str(seg[0] // PIXEL_TO_MM) + "," + str(seg[1]) + "\n"
-                print("After conversion: " + to_string)
-                print(to_string)
-                self.serial.write(to_string.encode())
-                time.sleep(15)
-
+            self.model.pending_screen_timer = time.time()
+            self.model.current_segment_sent = len(self.model.polar_points)-1
+        elif self.model.is_bending and self.model.current_segment_sent >= 0:
+            print(self.model.current_segment_sent)
+            print(self.model.polar_points[self.model.current_segment_sent])
+            self.model.current_segment_sent -= 1
+            time.sleep(0.5)
+        else:
+            self.model.is_bending = False
             # reset to new plan
             self.model.points = []
             self.model.polar_points = []
             self.reset_state()
 
-            self.model.is_bending = False
+    # def send_to_bender(self):
+    #     if self.serial is not None:
+    #         self.model.is_bending = True
+    #         self.model.pending_screen_timer = time.time()
+    #         for seg in reversed(self.model.polar_points):
+    #             print("segment is: " + str(seg))
+    #             to_string = str(seg[0] // PIXEL_TO_MM) + "," + str(seg[1]) + "\n"
+    #             print("After conversion: " + to_string)
+    #             print(to_string)
+    #             self.serial.write(to_string.encode())
+    #             time.sleep(15)
+    #
+    #         # reset to new plan
+    #         self.model.points = []
+    #         self.model.polar_points = []
+    #         self.reset_state()
+    #
+    #         self.model.is_bending = False
 
     def test_collisions(self, length, angle):
         points_to_test = self.extract_multiple_points(length, angle)
