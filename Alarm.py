@@ -1,6 +1,7 @@
 import pygame
 from enum import Enum
 import time
+from Constants import CONVERSION_FACTOR
 
 
 class Alarm:
@@ -18,6 +19,8 @@ class Alarm:
 
     def load_image(self, image_path: str):
         temp_image = pygame.image.load(image_path)
+        size = temp_image.get_size()
+        self.size = (size[0] // CONVERSION_FACTOR, size[1] // CONVERSION_FACTOR)
         temp_image = pygame.transform.scale(temp_image, self.size)
         self.img = temp_image
 

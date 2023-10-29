@@ -1,5 +1,6 @@
 import pygame
 from enum import Enum
+from Constants import CONVERSION_FACTOR
 
 
 class Button(object):
@@ -8,14 +9,15 @@ class Button(object):
         CLICK = 2
         HOVER = 3
 
-    def __init__(self, screen, pos, size, triggered_function, press_once=False):
+    def __init__(self,name, screen, pos, size, triggered_function, press_once=False):
+        self.name = name
         self.pos = pos
         self.size = size
         # self.color = color
         # self.coloron = coloron
         self.img = None
-        self.imghov = None
-        self.imgon = None
+        self.img_click = None
+        # self.imgon = None
         self.function = triggered_function
         self.press_once = press_once
         self.done = True
@@ -44,23 +46,27 @@ class Button(object):
             self.state = self.State.HOVER
 
     def draw_button(self):
-        if self.state == self.State.IDLE:
-            # pygame.draw.rect(self.screen, self.color, self.rect)
+        if self.state == self.State.IDLE or self.state == self.State.HOVER:
+            # pygame.draw.rect(self.screen, 'white', self.rect)
             self.screen.blit(self.img, self.img.get_rect(center=self.rect.center))
+
         elif self.state == self.State.CLICK:
-            # pygame.draw.rect(self.screen, self.coloron, self.rect)
-            self.screen.blit(self.imgon, self.imgon.get_rect(center=self.rect.center))
-        elif self.state == self.State.HOVER:
-            # pygame.draw.rect(self.screen, self.color, self.rect)
-            self.screen.blit(self.imghov, self.imghov.get_rect(center=self.rect.center))
+            # pygame.draw.rect(self.screen, 'green', self.rect)
+            self.screen.blit(self.img_click, self.img_click.get_rect(center=self.rect.center))
+        # elif self.state == self.State.HOVER:
+        #     pygame.draw.rect(self.screen, 'grey', self.rect)
+            # self.screen.blit(self.imghov, self.imghov.get_rect(center=self.rect.center))
+        # self.screen.blit(self.img, self.img.get_rect(center=self.rect.center))
 
-    def load_image(self, image_state, image_path: str):
+
+    def load_image(self,image_state, image_path: str):
         temp_image = pygame.image.load(image_path)
+        size = temp_image.get_size()
+        self.size = (size[0] // CONVERSION_FACTOR, size[1] // CONVERSION_FACTOR)
         temp_image = pygame.transform.scale(temp_image, self.size)
-
-        if image_state == self.State.IDLE:
+        if image_state == self.State.IDLE or self.state == self.State.HOVER:
             self.img = temp_image
         elif image_state == self.State.CLICK:
-            self.imgon = temp_image
-        elif image_state == self.State.HOVER:
-            self.imghov = temp_image
+            self.img_click = temp_image
+        # elif image_state == self.State.HOVER:
+        #     self.imghov = temp_image
