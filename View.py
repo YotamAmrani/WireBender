@@ -127,10 +127,10 @@ class View:
         #                      (bar_offset + 3, SCREEN_HEIGHT - bar_offset + 3, bar_width * ratio, bar_hieght - 6))
 
     def draw_capacity_buffer(self):
-        bar_top = SCREEN_HEIGHT - 94
-        bar_left = 163
-        bar_width = 225
-        bar_hieght = 35
+        bar_top = SCREEN_HEIGHT - 113
+        bar_left = 35
+        bar_width = 270
+        bar_hieght = 42
 
         ratio = ((self._model.total_length + self._model.segment_length)
                  / LINE_MAX_LENGTH)
@@ -142,7 +142,7 @@ class View:
                           ))
 
         pygame.draw.rect(self._model.screen, BUFFER_RED,
-                         (bar_left + 8, bar_top + 8, bar_width * ratio, bar_hieght - 16))
+                         (bar_left + 8, bar_top + 8, (bar_width-8) * ratio, bar_hieght - 16))
 
     def collision_box(self):
         # get the start point
@@ -159,7 +159,7 @@ class View:
     @staticmethod
     def scale_image(image):
         size = image.get_size()
-        size = (size[0] // CONVERSION_FACTOR, size[1] // CONVERSION_FACTOR)
+        size = (size[0] * CONVERSION_FACTOR, size[1] * CONVERSION_FACTOR)
         return pygame.transform.scale(image, size)
 
     def draw_screen(self):
@@ -186,8 +186,8 @@ class View:
                                                       self._model.screen.get_height() // 2)))
 
     def draw(self):
-        self._model.screen.fill(SCREEN_COLOR)
-        # self.draw_screen()
+        # self._model.screen.fill(SCREEN_COLOR)
+        self.draw_screen()
         self.draw_start_line()
         self.draw_current_line()
         # extract_multiple_points(self._model.screen)
@@ -198,6 +198,6 @@ class View:
         self.draw_alarms()
         if self._model.info_turn_on:
             self.draw_info_modal()
-        if self._model.is_bending:
+        if self._model.current_polar_point > -2:
             self.draw_pending_screen()
             # self.collision_box()

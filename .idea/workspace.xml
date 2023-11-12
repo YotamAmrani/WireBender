@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="bcc067dd-e6b4-4a7f-9cda-af090c5d41ab" name="Changes" comment="- SCREENS ACCORDING TO TOUCH SCREEN">
+      <change afterPath="$PROJECT_DIR$/pictures/BG.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pictures/info_modal_0.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pictures/info_modal_1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pictures/loading.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pictures/next_page.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pictures/prev_page.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Alarm.py" beforeDir="false" afterPath="$PROJECT_DIR$/Alarm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Button.py" beforeDir="false" afterPath="$PROJECT_DIR$/Button.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/Constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ThreadExtruder.py" beforeDir="false" afterPath="$PROJECT_DIR$/ThreadExtruder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View.py" beforeDir="false" afterPath="$PROJECT_DIR$/View.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/bend_left_idle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/bend_left_idle.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/bend_right_idle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/bend_right_idle.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/info_idle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/info_idle.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/press_wire_idle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/press_wire_idle.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/revert_idle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/revert_idle.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/send_idle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/send_idle.jpg" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2XRH4ujVDrug6Vq2kBFTd8IqGqo" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;ToolWindowGit.ShowToolbar&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/mada/PycharmProjects/WireBender/pictures&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pictures" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="ThreadExtruder" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="WireBender" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ThreadExtruder.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.ThreadExtruder" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bcc067dd-e6b4-4a7f-9cda-af090c5d41ab" name="Changes" comment="" />
+      <created>1698584784611</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1698584784611</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="- SCREENS ACCORDING TO TOUCH SCREEN" />
+    <option name="LAST_COMMIT_MESSAGE" value="- SCREENS ACCORDING TO TOUCH SCREEN" />
+  </component>
+</project>

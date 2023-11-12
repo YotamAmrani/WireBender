@@ -16,8 +16,10 @@ class Model:
         self.screen = screen
         self.points = []
         self.polar_points = []
+        self.current_polar_point = -2
+        self.sent_current_segment = False
         self.bender_angle = 0
-        self.segment_length = 0
+        self.segment_length = MINIMAL_SEGMENT_LENGTH
         self.total_length = 0
         self.buttons = []
         self.alarms = []
@@ -46,7 +48,7 @@ class Model:
         current_button.load_image(Button.State.CLICK, click_image_path)
         self.buttons.append(current_button)
 
-    def append_alarm(self, image_position, image_size, image_path, event_id):
-        current_alarm = Alarm(self.screen, image_position, image_size, buttonInactiveColour, event_id)
+    def append_alarm(self, image_position, image_path, event_id):
+        current_alarm = Alarm(self.screen, image_position, buttonInactiveColour, event_id)
         current_alarm.load_image(image_path)
         self.alarms.append(current_alarm)

@@ -44,8 +44,9 @@ class Controller:
         self.add_colliders()
 
         try:
-            self.serial = serial.Serial('COM3', baudrate=BAUD_RATE, timeout=1)
-        except serial.SerialException:
+            self.serial = serial.Serial('/dev/ttyACM0', baudrate=BAUD_RATE, timeout=1)
+        except serial.SerialException as e:
+            print(e)
             print("ERROR: could not open serial port")
             self.serial = None
 
@@ -82,10 +83,10 @@ class Controller:
         #                          FINISH_CLICK_IMAGE_PATH, True)
 
     def load_alarms(self):
-        self.model.append_alarm(ALARM_POSITION, ALARM_SIZE, RIGHT_ALARM_PATH, ROTATE_RIGHT_ALARM)
-        self.model.append_alarm(ALARM_POSITION, ALARM_SIZE, LEFT_ALARM_PATH, ROTATE_LEFT_ALARM)
-        self.model.append_alarm(ALARM_POSITION, ALARM_SIZE, SEGMENT_OUT_OF_BOUNDARY_PATH, SEGMENT_OUT_OF_BOUNDARY_ALARM)
-        self.model.append_alarm(ALARM_POSITION, ALARM_SIZE, TOO_LONG_ALARM_PATH, SEGMENT_TOO_LONG_ALARM)
+        self.model.append_alarm(ALARM_POSITION, RIGHT_ALARM_PATH, ROTATE_RIGHT_ALARM)
+        self.model.append_alarm(ALARM_POSITION, LEFT_ALARM_PATH, ROTATE_LEFT_ALARM)
+        self.model.append_alarm(ALARM_POSITION, SEGMENT_OUT_OF_BOUNDARY_PATH, SEGMENT_OUT_OF_BOUNDARY_ALARM)
+        self.model.append_alarm(ALARM_POSITION, TOO_LONG_ALARM_PATH, SEGMENT_TOO_LONG_ALARM)
 
     def add_colliders(self):
         # for i in range(0,SPINNER_DISTANCE, 10):
@@ -212,7 +213,7 @@ class Controller:
 
     def reset_state(self):
         self.model.bender_angle = 0
-        self.model.segment_length = 0
+        self.model.segment_length = MINIMAL_SEGMENT_LENGTH
 
     def revert(self):
         if self.model.polar_points:
@@ -271,41 +272,97 @@ class Controller:
         self.add_segment()
         self.reset_state()
 
-    def send_to_bender(self):
-        if not self.model.is_bending:
-            self.model.is_bending = True
-            self.model.pending_screen_timer = time.time()
-            self.model.current_segment_sent = len(self.model.polar_points)-1
-        elif self.model.is_bending and self.model.current_segment_sent >= 0:
-            print(self.model.current_segment_sent)
-            print(self.model.polar_points[self.model.current_segment_sent])
-            self.model.current_segment_sent -= 1
-            time.sleep(0.5)
-        else:
-            self.model.is_bending = False
-            # reset to new plan
-            self.model.points = []
-            self.model.polar_points = []
-            self.reset_state()
-
     # def send_to_bender(self):
     #     if self.serial is not None:
     #         self.model.is_bending = True
     #         self.model.pending_screen_timer = time.time()
     #         for seg in reversed(self.model.polar_points):
+    #
     #             print("segment is: " + str(seg))
-    #             to_string = str(seg[0] // PIXEL_TO_MM) + "," + str(seg[1]) + "\n"
+    #             to_string = str(seg[0] // PIXEL_TO_MM) + "," + str(seg[1]*-1) + "\n"
     #             print("After conversion: " + to_string)
-    #             print(to_string)
     #             self.serial.write(to_string.encode())
-    #             time.sleep(15)
+    #             print("sent :"
+    #                   + to_string)
+    #             time.sleep(6)
+    #         to_string = str(self.model.segment_length // PIXEL_TO_MM) + "," + str(0) + "\n"
+    #         print("After conversion: " + to_string)
+    #         self.serial.write(to_string.encode())
+    #         print("sent :"
+    #               + to_string)
+    #         time.sleep(3)
+    #         to_string = "CUT" + "\n"
+    #         self.serial.write(to_string.encode())
+    #         time.sleep(8)
     #
     #         # reset to new plan
     #         self.model.points = []
     #         self.model.polar_points = []
     #         self.reset_state()
-    #
+    #         self.model.total_length = 0
     #         self.model.is_bending = False
+    def send_to_bender(self):
+        #     non blocking version of send to bender
+        if self.serial is not None:
+            if not self.model.is_bending: # case we sent print for the first time
+                self.model.is_bending = True
+                self.model.pending_screen_timer = time.time()
+                self.model.current_polar_point = len(self.model.polar_points)-1
+                print("Enter bending mode")
+                print("We have " + str(len(self.model.polar_points)) + " segments!")
+            elif self.model.is_bending and self.model.current_polar_point >= 0 and not self.model.sent_current_segment:
+                # case we send one the segments
+                self.model.sent_current_segment = True
+                current_segment = self.model.polar_points[self.model.current_polar_point]
+                print("segment is: " + str(current_segment))
+                to_string = str(current_segment[0] // PIXEL_TO_MM) + "," + str(current_segment[1] * -1) + "\n"
+                self.serial.write(to_string.encode())
+                print("sent :"
+                      + to_string)
+            elif self.model.is_bending and self.model.current_polar_point == -2 and not self.model.sent_current_segment:
+                # case we need to send CUT
+                print("Sending CUT")
+                to_string = "CUT" + "\n"
+                self.serial.write(to_string.encode())
+                self.model.sent_current_segment = True
+            elif self.model.is_bending and self.model.current_polar_point ==-1 and not self.model.sent_current_segment:
+                # case we need to send CUT
+                to_string = str(self.model.segment_length // PIXEL_TO_MM) + "," + str(0) + "\n"
+                print("Sending last segment: " + to_string)
+                self.serial.write(to_string.encode())
+                self.model.sent_current_segment = True
+
+            elif self.model.sent_current_segment:
+                # case we wait for approval message (degree is not 0 or we sent "CUT")
+                if ((self.model.current_polar_point == -1 and self.model.bender_angle != 0) or
+                        self.model.current_polar_point == -2 or
+                    (self.model.current_polar_point >= 0 and
+                     self.model.polar_points[self.model.current_polar_point][1] != 0)):
+                    acknowledge = self.serial.readline().decode().strip()
+                    if "OK" in acknowledge:
+                        print(acknowledge)
+                        print("acknowledge segment: " + str(self.model.current_polar_point))
+                        self.model.sent_current_segment = False
+                        self.model.current_polar_point -= 1
+
+                # case degree is 0
+                elif ((self.model.current_polar_point == -1 and self.model.bender_angle == 0) or
+                      (self.model.current_polar_point >= 0
+                       and self.model.polar_points[self.model.current_polar_point][1] == 0)):
+                    time.sleep(3)
+                    print("acknowledge segment: " + str(self.model.current_polar_point))
+                    self.model.sent_current_segment = False
+                    self.model.current_polar_point -= 1
+
+            else:
+                print("Ending bend mode")
+                time.sleep(2)
+                # reset to new plan
+                self.model.points = []
+                self.model.polar_points = []
+                self.reset_state()
+                self.model.total_length = 0
+                self.model.is_bending = False
 
     def test_collisions(self, length, angle):
         points_to_test = self.extract_multiple_points(length, angle)
@@ -313,9 +370,9 @@ class Controller:
         if not points_to_test:
             radar_center = (self.model.screen.get_width() // 2, self.model.screen.get_height() - SPINNER_DISTANCE)
             x = radar_center[0] + math.sin(math.radians(angle)) * \
-                                  (-length)
+                (-length)
             y = radar_center[1] + math.cos(math.radians(angle)) * \
-                                  (-length)
+                (-length)
             points_to_test.append(pygame.Vector2(x, y))
 
         for c in self.model.colliders:
@@ -329,9 +386,9 @@ class Controller:
         if not points_to_test:
             radar_center = (self.model.screen.get_width() // 2, self.model.screen.get_height() - SPINNER_DISTANCE)
             x = radar_center[0] + math.sin(math.radians(angle)) * \
-                                  (-length)
+                (-length)
             y = radar_center[1] + math.cos(math.radians(angle)) * \
-                                  (-length)
+                (-length)
             points_to_test.append(pygame.Vector2(x, y))
 
         for p in points_to_test:
@@ -340,7 +397,7 @@ class Controller:
         return False
 
     def display_info(self):
-        self.model.info_turn_on = True
+        self.model.info_turn_on = not self.model.info_turn_on
 
     def close_info_screen(self):
         self.model.info_turn_on = False
@@ -359,6 +416,15 @@ def runPyGame():
     # Main game loop.
     dt = 1 / fps  # dt is the time since last frame.
     controller = Controller()
+
+    to_string = "CUT" + "\n"
+    controller.serial.write(to_string.encode())
+    line = controller.serial.readline()
+    # while not line:
+    #     controller.serial.readline()
+    # print(line.decode())
+
+    print("sent")
     while True:
         controller.update(dt)
         controller.view.draw()

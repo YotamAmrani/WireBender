@@ -62,7 +62,7 @@ class Button(object):
     def load_image(self,image_state, image_path: str):
         temp_image = pygame.image.load(image_path)
         size = temp_image.get_size()
-        self.size = (size[0] // CONVERSION_FACTOR, size[1] // CONVERSION_FACTOR)
+        self.size = (size[0] * CONVERSION_FACTOR, size[1] * CONVERSION_FACTOR)
         temp_image = pygame.transform.scale(temp_image, self.size)
         if image_state == self.State.IDLE or self.state == self.State.HOVER:
             self.img = temp_image
