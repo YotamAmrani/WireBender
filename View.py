@@ -79,7 +79,7 @@ class View:
                          (0, SCREEN_HEIGHT - BUTTONS_PANEL_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT
                           ))
 
-        for b in range(len(self._model.buttons) - 1):
+        for b in range(len(self._model.buttons)):
             self._model.buttons[b].draw_button()
             # print("was here!")
 
@@ -170,9 +170,11 @@ class View:
 
     def draw_info_modal(self):
         temp = self.scale_image(self._model.info_modal)
+        temp_rect = temp.get_rect()
+        temp_rect.topright = (self._model.screen.get_width(), 0)  # set top right
         self._model.screen.blit(temp,
-                                temp.get_rect())
-        self._model.buttons[-1].draw_button()
+                                temp_rect)
+        # self._model.buttons[-1].draw_button()
 
     def draw_pending_screen(self):
 
@@ -186,8 +188,8 @@ class View:
                                                       self._model.screen.get_height() // 2)))
 
     def draw(self):
-        # self._model.screen.fill(SCREEN_COLOR)
-        self.draw_screen()
+        self._model.screen.fill(SCREEN_COLOR)
+        # self.draw_screen()
         self.draw_start_line()
         self.draw_current_line()
         # extract_multiple_points(self._model.screen)

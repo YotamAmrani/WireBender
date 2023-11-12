@@ -32,6 +32,7 @@ class Model:
         self.current_pending_screen = 0
         self.pending_screen_timer = time.time()
         self.info_turn_on = False
+        self.current_info_page = 0
         self.is_bending = False
         self.current_segment_sent = 0
         self.key_0_pressed = False

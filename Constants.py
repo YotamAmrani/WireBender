@@ -91,7 +91,8 @@ CLOSE_INFO_BUTTON_POSITION = (SCREEN_WIDTH - 66, -30)
 # load images
 SCREEN_IMAGE = "pictures/BG.jpg"
 # SCREEN_IMAGE = "מסכים מוצג כיפוף/מסכים למיצג כיפוף_החופש ליצור30.jpg"
-INFO_SCREEN_IMAGE_PATH = "pictures/info_screen.jpg"
+# INFO_SCREEN_IMAGE_PATH = "pictures/info_screen.jpg"
+INFO_SCREEN_IMAGE_PATH = "pictures/info_modal_0.jpg"
 SPINNER_IMAGE = "pictures/spinner_medium.png"
 # EXTRUDE_HOVER_IMAGE_PATH = "pictures/extrude_button_1.png"
 EXTRUDE_IDLE_IMAGE_PATH = "pictures/press_wire_idle.jpg"

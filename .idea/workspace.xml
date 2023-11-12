@@ -4,25 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcc067dd-e6b4-4a7f-9cda-af090c5d41ab" name="Changes" comment="- SCREENS ACCORDING TO TOUCH SCREEN">
-      <change afterPath="$PROJECT_DIR$/pictures/BG.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pictures/info_modal_0.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pictures/info_modal_1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pictures/loading.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pictures/next_page.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pictures/prev_page.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Alarm.py" beforeDir="false" afterPath="$PROJECT_DIR$/Alarm.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Button.py" beforeDir="false" afterPath="$PROJECT_DIR$/Button.py" afterDir="false" />
+    <list default="true" id="bcc067dd-e6b4-4a7f-9cda-af090c5d41ab" name="Changes" comment="fixing the blocking issue of sen_to_bend">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/Constants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ThreadExtruder.py" beforeDir="false" afterPath="$PROJECT_DIR$/ThreadExtruder.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/View.py" beforeDir="false" afterPath="$PROJECT_DIR$/View.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pictures/bend_left_idle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/bend_left_idle.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pictures/bend_right_idle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/bend_right_idle.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pictures/info_idle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/info_idle.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pictures/press_wire_idle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/press_wire_idle.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pictures/revert_idle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/revert_idle.jpg" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pictures/send_idle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/send_idle.jpg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,6 +79,15 @@
       <option name="presentableId" value="Default" />
       <updated>1698584784611</updated>
     </task>
+    <task id="LOCAL-00001" summary="fixing the blocking issue of sen_to_bend">
+      <option name="closed" value="true" />
+      <created>1699809300139</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1699809300139</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -107,6 +103,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="- SCREENS ACCORDING TO TOUCH SCREEN" />
-    <option name="LAST_COMMIT_MESSAGE" value="- SCREENS ACCORDING TO TOUCH SCREEN" />
+    <MESSAGE value="fixing the blocking issue of sen_to_bend" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixing the blocking issue of sen_to_bend" />
   </component>
 </project>

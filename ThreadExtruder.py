@@ -71,10 +71,11 @@ class Controller:
                                  INFO_IDLE_IMAGE_PATH,
                                  INFO_CLICK_IMAGE_PATH, True)
 
-        self.model.append_button("CLOSE INFO", self.close_info_screen, CLOSE_INFO_BUTTON_POSITION,
-                                 ROTATE_LEFT_BUTTON_SIZE,
-                                 CLOSE_INFO_IDLE_IMAGE_PATH,
-                                 CLOSE_INFO_CLICK_IMAGE_PATH, True)
+        # self.model.append_button("CLOSE INFO", self.close_info_screen, CLOSE_INFO_BUTTON_POSITION,
+        #                          ROTATE_LEFT_BUTTON_SIZE,
+        #                          CLOSE_INFO_IDLE_IMAGE_PATH,
+        #                          CLOSE_INFO_CLICK_IMAGE_PATH, True)
+
         # self.model.append_button(self.add_segment_and_reset, ADD_SEGMENT_BUTTON_POSITION, ADD_SEGMENT_BUTTON_SIZE,
         #                          ADD_SEGMENT_IDLE_IMAGE_PATH, ADD_SEGMENT_HOVER_IMAGE_PATH,
         #                          ADD_SEGMENT_CLICK_IMAGE_PATH, True)
