@@ -71,17 +71,13 @@ class Controller:
                                  INFO_IDLE_IMAGE_PATH,
                                  INFO_CLICK_IMAGE_PATH, True)
 
-        # self.model.append_button("CLOSE INFO", self.close_info_screen, CLOSE_INFO_BUTTON_POSITION,
-        #                          ROTATE_LEFT_BUTTON_SIZE,
-        #                          CLOSE_INFO_IDLE_IMAGE_PATH,
-        #                          CLOSE_INFO_CLICK_IMAGE_PATH, True)
+        self.model.append_button("NEXT", self.next_info_screen, NEXT_BUTTON_POSITION, ROTATE_LEFT_BUTTON_SIZE,
+                                 NEXT_INFO_IDLE_IMAGE_PATH,
+                                 NEXT_INFO_IDLE_IMAGE_PATH, True)
 
-        # self.model.append_button(self.add_segment_and_reset, ADD_SEGMENT_BUTTON_POSITION, ADD_SEGMENT_BUTTON_SIZE,
-        #                          ADD_SEGMENT_IDLE_IMAGE_PATH, ADD_SEGMENT_HOVER_IMAGE_PATH,
-        #                          ADD_SEGMENT_CLICK_IMAGE_PATH, True)
-        # self.model.append_button(self.finish, FINISH_BUTTON_POSITION, FINISH_BUTTON_SIZE,
-        #                          FINISH_IDLE_IMAGE_PATH, FINISH_HOVER_IMAGE_PATH,
-        #                          FINISH_CLICK_IMAGE_PATH, True)
+        self.model.append_button("PREV", self.prev_info_screen, NEXT_BUTTON_POSITION, ROTATE_LEFT_BUTTON_SIZE,
+                                 PREV_INFO_IDLE_IMAGE_PATH,
+                                 PREV_INFO_IDLE_IMAGE_PATH, True)
 
     def load_alarms(self):
         self.model.append_alarm(ALARM_POSITION, RIGHT_ALARM_PATH, ROTATE_RIGHT_ALARM)
@@ -175,7 +171,9 @@ class Controller:
                 button.update()
                 self.send_to_bender()
             elif not self.model.is_bending:
-                button.update()
+                if not ((button.name == "NEXT" and not self.model.current_info_page == 0) or
+                        (button.name == "PREV" and not self.model.current_info_page == 1)):
+                    button.update()
 
     def extract_multiple_points(self, length, angle):
         points = []
@@ -235,7 +233,7 @@ class Controller:
 
         elif self.model.bender_angle == 0:
             if self.model.total_length + self.model.segment_length < LINE_MAX_LENGTH:
-                self.model.segment_length += 1
+                self.model.segment_length += PIXEL_PER_PRESS
             else:
                 pygame.event.post(pygame.event.Event(SEGMENT_TOO_LONG_ALARM))
                 print("segment is too long alarm")
@@ -320,13 +318,15 @@ class Controller:
                 self.serial.write(to_string.encode())
                 print("sent :"
                       + to_string)
-            elif self.model.is_bending and self.model.current_polar_point == -2 and not self.model.sent_current_segment:
+            elif (self.model.is_bending and self.model.current_polar_point == CUT_COMMAND
+                  and not self.model.sent_current_segment):
                 # case we need to send CUT
                 print("Sending CUT")
                 to_string = "CUT" + "\n"
                 self.serial.write(to_string.encode())
                 self.model.sent_current_segment = True
-            elif self.model.is_bending and self.model.current_polar_point ==-1 and not self.model.sent_current_segment:
+            elif (self.model.is_bending and self.model.current_polar_point == LAST_SEGMENT_COMMAND
+                  and not self.model.sent_current_segment):
                 # case we need to send CUT
                 to_string = str(self.model.segment_length // PIXEL_TO_MM) + "," + str(0) + "\n"
                 print("Sending last segment: " + to_string)
@@ -335,8 +335,8 @@ class Controller:
 
             elif self.model.sent_current_segment:
                 # case we wait for approval message (degree is not 0 or we sent "CUT")
-                if ((self.model.current_polar_point == -1 and self.model.bender_angle != 0) or
-                        self.model.current_polar_point == -2 or
+                if ((self.model.current_polar_point == LAST_SEGMENT_COMMAND and self.model.bender_angle != 0) or
+                        self.model.current_polar_point == CUT_COMMAND or
                     (self.model.current_polar_point >= 0 and
                      self.model.polar_points[self.model.current_polar_point][1] != 0)):
                     acknowledge = self.serial.readline().decode().strip()
@@ -347,7 +347,7 @@ class Controller:
                         self.model.current_polar_point -= 1
 
                 # case degree is 0
-                elif ((self.model.current_polar_point == -1 and self.model.bender_angle == 0) or
+                elif ((self.model.current_polar_point == LAST_SEGMENT_COMMAND and self.model.bender_angle == 0) or
                       (self.model.current_polar_point >= 0
                        and self.model.polar_points[self.model.current_polar_point][1] == 0)):
                     time.sleep(3)
@@ -399,6 +399,16 @@ class Controller:
 
     def display_info(self):
         self.model.info_turn_on = not self.model.info_turn_on
+        self.model.current_info_page = 0
+
+    def next_info_screen(self):
+        print("clicked")
+        print(self.model.current_info_page)
+        self.model.current_info_page += 1
+
+    def prev_info_screen(self):
+        print("clicked 2")
+        self.model.current_info_page -= 1
 
     def close_info_screen(self):
         self.model.info_turn_on = False

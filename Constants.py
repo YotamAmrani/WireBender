@@ -15,9 +15,12 @@ FONT_PATH = "C:\Windows\Fonts\Assistant-Bold.ttf"
 # Serial
 BAUD_RATE = 115200
 PIXEL_TO_MM = 5
+PIXEL_PER_PRESS = 1
+LAST_SEGMENT_COMMAND = -1
+CUT_COMMAND = -2
 
 # line and spinner
-LINE_WIDTH = 20
+LINE_WIDTH = 15
 LINE_COLOR = GREY
 SPINNER_DISTANCE = 260
 BUTTONS_PANEL_HEIGHT = 186
@@ -25,7 +28,7 @@ SPINNER_SPEED = 1
 LEFT_MAX_VALUE = 135
 RIGHT_MIN_VALUE = -135
 
-MINIMAL_SEGMENT_LENGTH = 30
+MINIMAL_SEGMENT_LENGTH = 40
 
 LINE_MAX_LENGTH = 150 * PIXEL_TO_MM  # 1000/5 = 250mm
 
@@ -87,12 +90,15 @@ CLEAN_BUTTON_POSITION = (1300, SCREEN_HEIGHT - button_top)
 EXTRUDE_BUTTON_POSITION = (1500, SCREEN_HEIGHT - button_top)
 INFO_BUTTON_POSITION = (1735, SCREEN_HEIGHT - button_top)
 CLOSE_INFO_BUTTON_POSITION = (SCREEN_WIDTH - 66, -30)
+NEXT_BUTTON_POSITION = (230,225)
 
 # load images
 SCREEN_IMAGE = "pictures/BG.jpg"
 # SCREEN_IMAGE = "מסכים מוצג כיפוף/מסכים למיצג כיפוף_החופש ליצור30.jpg"
 # INFO_SCREEN_IMAGE_PATH = "pictures/info_screen.jpg"
-INFO_SCREEN_IMAGE_PATH = "pictures/info_modal_0.jpg"
+INFO_SCREEN_0_IMAGE_PATH = "pictures/info_modal_0.jpg"
+INFO_SCREEN_1_IMAGE_PATH = "pictures/info_modal_1.jpg"
+
 SPINNER_IMAGE = "pictures/spinner_medium.png"
 # EXTRUDE_HOVER_IMAGE_PATH = "pictures/extrude_button_1.png"
 EXTRUDE_IDLE_IMAGE_PATH = "pictures/press_wire_idle.jpg"
@@ -115,6 +121,9 @@ INFO_IDLE_IMAGE_PATH = "pictures/info_idle.jpg"
 INFO_CLICK_IMAGE_PATH = "pictures/info_click.jpg"
 CLOSE_INFO_IDLE_IMAGE_PATH = "pictures/close_info_idle.jpg"
 CLOSE_INFO_CLICK_IMAGE_PATH = "pictures/close_info_click.jpg"
+NEXT_INFO_IDLE_IMAGE_PATH = "pictures/next_page.jpg"
+PREV_INFO_IDLE_IMAGE_PATH = "pictures/prev_page.jpg"
+
 
 CAPACITY_IMAGE_PATH = "pictures/Loading.png"
 

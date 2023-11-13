@@ -13,21 +13,23 @@ class Model:
     """
 
     def __init__(self, screen):
-        self.screen = screen
+        self.screen = screen # main screen surface
+        # points and system state data members
         self.points = []
         self.polar_points = []
-        self.current_polar_point = -2
+        self.current_polar_point = CUT_COMMAND
         self.sent_current_segment = False
         self.bender_angle = 0
         self.segment_length = MINIMAL_SEGMENT_LENGTH
         self.total_length = 0
+        # View data members
         self.buttons = []
         self.alarms = []
         self.colliders = []
         self.spinner = pygame.image.load(SPINNER_IMAGE)
         self.capacity_buffer = pygame.image.load(CAPACITY_IMAGE_PATH)
         self.screen_image = pygame.image.load(SCREEN_IMAGE)
-        self.info_modal = pygame.image.load(INFO_SCREEN_IMAGE_PATH)
+        self.info_modal = [pygame.image.load(INFO_SCREEN_0_IMAGE_PATH), pygame.image.load(INFO_SCREEN_1_IMAGE_PATH)]
         self.pending_screen = [pygame.image.load(PLEASE_WAIT_SCREEN_0),pygame.image.load(PLEASE_WAIT_SCREEN_1)]
         self.current_pending_screen = 0
         self.pending_screen_timer = time.time()

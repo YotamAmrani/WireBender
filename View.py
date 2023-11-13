@@ -80,8 +80,9 @@ class View:
                           ))
 
         for b in range(len(self._model.buttons)):
-            self._model.buttons[b].draw_button()
-            # print("was here!")
+            if self._model.buttons[b].name != "NEXT" and self._model.buttons[b].name != "PREV":
+                self._model.buttons[b].draw_button()
+                # print("was here!")
 
         self.draw_capacity_buffer()
 
@@ -169,12 +170,16 @@ class View:
                                                       self._model.screen.get_height() // 2)))
 
     def draw_info_modal(self):
-        temp = self.scale_image(self._model.info_modal)
+        temp = self.scale_image(self._model.info_modal[self._model.current_info_page])
         temp_rect = temp.get_rect()
         temp_rect.topright = (self._model.screen.get_width(), 0)  # set top right
         self._model.screen.blit(temp,
                                 temp_rect)
-        # self._model.buttons[-1].draw_button()
+        for b in self._model.buttons:
+            if self._model.current_info_page == 0 and b.name == "NEXT":
+                b.draw_button()
+            elif self._model.current_info_page == 1 and b.name == "PREV":
+                b.draw_button()
 
     def draw_pending_screen(self):
 
