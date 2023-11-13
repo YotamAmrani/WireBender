@@ -239,7 +239,11 @@ class Controller:
                 print("segment is too long alarm")
 
         else:
-            self.add_segment_and_reset()
+            if self.model.total_length + self.model.segment_length < LINE_MAX_LENGTH:
+                self.add_segment_and_reset()
+            else:
+                pygame.event.post(pygame.event.Event(SEGMENT_TOO_LONG_ALARM))
+                print("segment is too long alarm")
 
     def rotate_right(self):
         if self.test_collisions(self.model.segment_length, self.model.bender_angle - 1) or \
@@ -445,4 +449,9 @@ def runPyGame():
         dt = fpsClock.tick(fps)
 
 
-runPyGame()
+def main():
+    runPyGame()
+
+
+if __name__ == "__main__":
+    main()

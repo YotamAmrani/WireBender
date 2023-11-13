@@ -72,7 +72,7 @@ class View:
 
     def draw_buttons_panel(self):
         """
-        Check all buttons states. # for each button, check if it was pressed
+        Check all buttons stats. # for each button, check if it was pressed
         :return: None
         """
         pygame.draw.rect(self._model.screen, 'white',
