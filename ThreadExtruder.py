@@ -332,7 +332,7 @@ class Controller:
             elif (self.model.is_bending and self.model.current_polar_point == LAST_SEGMENT_COMMAND
                   and not self.model.sent_current_segment):
                 # case we need to send CUT
-                to_string = str(self.model.segment_length // PIXEL_TO_MM) + "," + str(0) + "\n"
+                to_string = str(self.model.segment_length // PIXEL_TO_MM) + "," + str(self.model.bender_angle) + "\n"
                 print("Sending last segment: " + to_string)
                 self.serial.write(to_string.encode())
                 self.model.sent_current_segment = True

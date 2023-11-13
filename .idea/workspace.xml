@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcc067dd-e6b4-4a7f-9cda-af090c5d41ab" name="Changes" comment="">
+    <list default="true" id="bcc067dd-e6b4-4a7f-9cda-af090c5d41ab" name="Changes" comment="fixing bug of maximal length and edge case of adding new segment">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/Constants.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ThreadExtruder.py" beforeDir="false" afterPath="$PROJECT_DIR$/ThreadExtruder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/View.py" beforeDir="false" afterPath="$PROJECT_DIR$/View.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +92,23 @@
       <option name="project" value="LOCAL" />
       <updated>1699810391715</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="adding support to the info screen&#10;NEED TO ARRANGE THE PROJECT">
+      <option name="closed" value="true" />
+      <created>1699873634089</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1699873634089</updated>
+    </task>
+    <task id="LOCAL-00004" summary="fixing bug of maximal length and edge case of adding new segment">
+      <option name="closed" value="true" />
+      <created>1699876454865</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1699876454865</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -112,6 +125,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="- SCREENS ACCORDING TO TOUCH SCREEN" />
     <MESSAGE value="fixing the blocking issue of sen_to_bend" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixing the blocking issue of sen_to_bend" />
+    <MESSAGE value="adding support to the info screen&#10;NEED TO ARRANGE THE PROJECT" />
+    <MESSAGE value="fixing bug of maximal length and edge case of adding new segment" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixing bug of maximal length and edge case of adding new segment" />
   </component>
 </project>
