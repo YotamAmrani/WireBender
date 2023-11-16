@@ -71,6 +71,10 @@ class Controller:
                                  INFO_IDLE_IMAGE_PATH,
                                  INFO_CLICK_IMAGE_PATH, True)
 
+        self.model.append_button("CLEAR", self.clear_all, CLEAR_BUTTON_POSITION, ROTATE_LEFT_BUTTON_SIZE,
+                                 CLEAR_IDLE_IMAGE_PATH,
+                                 CLEAR_CLICK_IMAGE_PATH, True)
+
         self.model.append_button("NEXT", self.next_info_screen, NEXT_BUTTON_POSITION, ROTATE_LEFT_BUTTON_SIZE,
                                  NEXT_INFO_IDLE_IMAGE_PATH,
                                  NEXT_INFO_IDLE_IMAGE_PATH, True)
@@ -416,6 +420,14 @@ class Controller:
 
     def close_info_screen(self):
         self.model.info_turn_on = False
+
+    def clear_all(self):
+        # reset to new plan
+        self.model.points = []
+        self.model.polar_points = []
+        self.reset_state()
+        self.model.total_length = 0
+        self.model.is_bending = False
 
     @staticmethod
     def finish():

@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcc067dd-e6b4-4a7f-9cda-af090c5d41ab" name="Changes" comment="fixing bug of maximal length and edge case of adding new segment">
+    <list default="true" id="bcc067dd-e6b4-4a7f-9cda-af090c5d41ab" name="Changes" comment="fixed bug of sending last segment with angle">
+      <change afterPath="$PROJECT_DIR$/pictures/clear_all_click.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pictures/clear_all_idle.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/Constants.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ThreadExtruder.py" beforeDir="false" afterPath="$PROJECT_DIR$/ThreadExtruder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/info_modal_0.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/info_modal_0.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/info_modal_1.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/info_modal_1.jpg" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,6 +41,9 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/pictures" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/pictures" />
     </key>
   </component>
@@ -108,7 +116,15 @@
       <option name="project" value="LOCAL" />
       <updated>1699876454865</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="fixed bug of sending last segment with angle">
+      <option name="closed" value="true" />
+      <created>1699878497640</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1699878497640</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -127,6 +143,7 @@
     <MESSAGE value="fixing the blocking issue of sen_to_bend" />
     <MESSAGE value="adding support to the info screen&#10;NEED TO ARRANGE THE PROJECT" />
     <MESSAGE value="fixing bug of maximal length and edge case of adding new segment" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixing bug of maximal length and edge case of adding new segment" />
+    <MESSAGE value="fixed bug of sending last segment with angle" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed bug of sending last segment with angle" />
   </component>
 </project>

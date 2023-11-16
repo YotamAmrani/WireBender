@@ -86,11 +86,12 @@ SEND_BUTTON_POSITION = (465, SCREEN_HEIGHT - button_top)
 REVERT_BUTTON_POSITION = (700, SCREEN_HEIGHT - button_top)
 ROTATE_LEFT_BUTTON_POSITION = (900, SCREEN_HEIGHT - button_top)
 ROTATE_RIGHT_BUTTON_POSITION = (1100, SCREEN_HEIGHT - button_top)
-CLEAN_BUTTON_POSITION = (1300, SCREEN_HEIGHT - button_top)
+CLEAR_BUTTON_POSITION = (1300, SCREEN_HEIGHT - button_top)
 EXTRUDE_BUTTON_POSITION = (1500, SCREEN_HEIGHT - button_top)
 INFO_BUTTON_POSITION = (1735, SCREEN_HEIGHT - button_top)
+
 CLOSE_INFO_BUTTON_POSITION = (SCREEN_WIDTH - 66, -30)
-NEXT_BUTTON_POSITION = (230,225)
+NEXT_BUTTON_POSITION = (80,253)
 
 # load images
 SCREEN_IMAGE = "pictures/BG.jpg"
@@ -121,6 +122,8 @@ INFO_IDLE_IMAGE_PATH = "pictures/info_idle.jpg"
 INFO_CLICK_IMAGE_PATH = "pictures/info_click.jpg"
 CLOSE_INFO_IDLE_IMAGE_PATH = "pictures/close_info_idle.jpg"
 CLOSE_INFO_CLICK_IMAGE_PATH = "pictures/close_info_click.jpg"
+CLEAR_IDLE_IMAGE_PATH = "pictures/clear_all_idle.jpg"
+CLEAR_CLICK_IMAGE_PATH = "pictures/clear_all_click.jpg"
 NEXT_INFO_IDLE_IMAGE_PATH = "pictures/next_page.jpg"
 PREV_INFO_IDLE_IMAGE_PATH = "pictures/prev_page.jpg"
 
