@@ -312,6 +312,7 @@ class Controller:
         #     non blocking version of send to bender
         if self.serial is not None:
             if not self.model.is_bending: # case we sent print for the first time
+                self.serial.read_all()
                 self.model.is_bending = True
                 self.model.pending_screen_timer = time.time()
                 self.model.current_polar_point = len(self.model.polar_points)-1
@@ -336,7 +337,7 @@ class Controller:
             elif (self.model.is_bending and self.model.current_polar_point == LAST_SEGMENT_COMMAND
                   and not self.model.sent_current_segment):
                 # case we need to send CUT
-                to_string = str(self.model.segment_length // PIXEL_TO_MM) + "," + str(self.model.bender_angle) + "\n"
+                to_string = str(self.model.segment_length // PIXEL_TO_MM) + "," + str(self.model.bender_angle* -1) + "\n"
                 print("Sending last segment: " + to_string)
                 self.serial.write(to_string.encode())
                 self.model.sent_current_segment = True
@@ -444,14 +445,6 @@ def runPyGame():
     dt = 1 / fps  # dt is the time since last frame.
     controller = Controller()
 
-    to_string = "CUT" + "\n"
-    controller.serial.write(to_string.encode())
-    line = controller.serial.readline()
-    # while not line:
-    #     controller.serial.readline()
-    # print(line.decode())
-
-    print("sent")
     while True:
         controller.update(dt)
         controller.view.draw()

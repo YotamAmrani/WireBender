@@ -4,14 +4,51 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bcc067dd-e6b4-4a7f-9cda-af090c5d41ab" name="Changes" comment="fixed bug of sending last segment with angle">
-      <change afterPath="$PROJECT_DIR$/pictures/clear_all_click.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pictures/clear_all_idle.jpg" afterDir="false" />
+    <list default="true" id="bcc067dd-e6b4-4a7f-9cda-af090c5d41ab" name="Changes" comment="added new screens">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/WireBender.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/WireBender.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Alarm.py" beforeDir="false" afterPath="$PROJECT_DIR$/Alarm.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Button.py" beforeDir="false" afterPath="$PROJECT_DIR$/Button.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CODEOWNERS" beforeDir="false" afterPath="$PROJECT_DIR$/CODEOWNERS" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Constants.py" beforeDir="false" afterPath="$PROJECT_DIR$/Constants.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Model.py" beforeDir="false" afterPath="$PROJECT_DIR$/Model.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ThreadExtruder.py" beforeDir="false" afterPath="$PROJECT_DIR$/ThreadExtruder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/View.py" beforeDir="false" afterPath="$PROJECT_DIR$/View.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/BG.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/BG.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/Loading.png" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/Loading.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/bend_left_click.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/bend_left_click.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/bend_left_idle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/bend_left_idle.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/bend_right_click.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/bend_right_click.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/bend_right_idle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/bend_right_idle.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/clear_all_click.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/clear_all_click.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/clear_all_idle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/clear_all_idle.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/close_info_click.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/close_info_click.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/close_info_idle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/close_info_idle.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/info_click.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/info_click.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/info_idle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/info_idle.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/info_modal.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/info_modal.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pictures/info_modal_0.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/info_modal_0.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pictures/info_modal_1.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/info_modal_1.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/info_screen.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/info_screen.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/loading.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/loading.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/max_length_alarm.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/max_length_alarm.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/next_page.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/next_page.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/out_of_boundary_alarm.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/out_of_boundary_alarm.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/please_wait_1.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/please_wait_1.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/please_wait_2.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/please_wait_2.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/press_wire_click.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/press_wire_click.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/press_wire_idle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/press_wire_idle.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/prev_page.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/prev_page.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/revert_click.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/revert_click.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/revert_idle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/revert_idle.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/send_click.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/send_click.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/send_idle.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/send_idle.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pictures/spinner_medium.png" beforeDir="false" afterPath="$PROJECT_DIR$/pictures/spinner_medium.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spiner.ai" beforeDir="false" afterPath="$PROJECT_DIR$/spiner.ai" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,7 +161,15 @@
       <option name="project" value="LOCAL" />
       <updated>1699878497640</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="added new screens">
+      <option name="closed" value="true" />
+      <created>1700153559983</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1700153559983</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -144,6 +189,7 @@
     <MESSAGE value="adding support to the info screen&#10;NEED TO ARRANGE THE PROJECT" />
     <MESSAGE value="fixing bug of maximal length and edge case of adding new segment" />
     <MESSAGE value="fixed bug of sending last segment with angle" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed bug of sending last segment with angle" />
+    <MESSAGE value="added new screens" />
+    <option name="LAST_COMMIT_MESSAGE" value="added new screens" />
   </component>
 </project>
