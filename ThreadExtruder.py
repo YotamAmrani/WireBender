@@ -5,12 +5,9 @@ from View import *
 from Model import *
 import time
 import serial
-import logging
+from myLogger import logger
 
 # TODO: setup maybe minimal length to the wire after large rotation
-# TODO: differ between one time press button and long press
-# TODO: add logger to the system
-# TODO: add currently bending banner
 # TODO: add automatic reset to welcome page
 
 
@@ -24,7 +21,6 @@ import logging
 # Time rotating logging
 # https://stackoverflow.com/questions/44718204/python-how-to-create-log-file-everyday-using-logging-module
 
-logging.basicConfig(filename='logging.log', level=logging.DEBUG)
 
 
 class Controller:
@@ -36,18 +32,29 @@ class Controller:
 
         print("screen width: ", pygame.display.Info().current_w)
         print("screen height: ", pygame.display.Info().current_h)
+        logger.info("Screen width: " + str(pygame.display.Info().current_w))
+        logger.info("screen height: " +  str(pygame.display.Info().current_h))
 
         self.model = Model(screen)
+        logger.info("Model module loaded successfully!")
         self.view = View(self.model)
+        logger.info("View module loaded successfully!")
         self.load_buttons()
+        logger.info("Buttons were loaded successfully!")
         self.load_alarms()
+        logger.info("Alarms were loaded successfully!")
         self.add_colliders()
+        logger.info("Colliders were loaded successfully!")
 
         try:
             self.serial = serial.Serial('/dev/ttyACM0', baudrate=BAUD_RATE, timeout=1)
         except serial.SerialException as e:
             print(e)
             print("ERROR: could not open serial port")
+            logger.critical("could not open serial port: " + '/dev/ttyACM0')
+            logger.critical("make sure baud rate is correct, serial port is configured by the system,"
+                             "and that the USB cable is connected.")
+            logger.critical("the serial module exception message: " + str(e))
             self.serial = None
 
     def load_buttons(self):
@@ -213,10 +220,14 @@ class Controller:
             self.model.total_length += self.model.segment_length
             self.model.polar_points = [current_segment] + self.model.polar_points
         print(self.model.polar_points)
+        logger.info("Segment was added: " + str(current_segment))
+        logger.debug("current state: " + str(self.model.polar_points))
 
     def reset_state(self):
         self.model.bender_angle = 0
         self.model.segment_length = MINIMAL_SEGMENT_LENGTH
+        logger.debug("reset state")
+        logger.debug("current state: " + str(self.model.polar_points))
 
     def revert(self):
         if self.model.polar_points:
@@ -229,6 +240,8 @@ class Controller:
             print(self.model.segment_length, self.model.bender_angle)
         else:
             self.reset_state()
+        logger.debug("revert last step")
+        logger.debug("current state: " + str(self.model.polar_points))
 
     def extrude(self):
         if self.test_collisions(self.model.segment_length + 1, self.model.bender_angle) or \
@@ -429,6 +442,8 @@ class Controller:
         self.reset_state()
         self.model.total_length = 0
         self.model.is_bending = False
+        logger.debug("Cleared all segments")
+        logger.debug("current state: " + str(self.model.polar_points))
 
     @staticmethod
     def finish():
@@ -437,7 +452,11 @@ class Controller:
 
 
 def runPyGame():
-    pygame.init()
+    try:
+        pygame.init()
+        logger.debug("pygame Loaded successfully!")
+    except e:
+        logger.critical("pygame failed to load")
 
     # Set up the clock. This will tick every frame and thus maintain a relatively constant framerate. Hopefully.
     fpsClock = pygame.time.Clock()
