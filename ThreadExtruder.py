@@ -33,7 +33,7 @@ class Controller:
         print("screen width: ", pygame.display.Info().current_w)
         print("screen height: ", pygame.display.Info().current_h)
         logger.info("Screen width: " + str(pygame.display.Info().current_w))
-        logger.info("screen height: " +  str(pygame.display.Info().current_h))
+        logger.info("screen height: " + str(pygame.display.Info().current_h))
 
         self.model = Model(screen)
         logger.info("Model module loaded successfully!")
@@ -247,6 +247,7 @@ class Controller:
         if self.test_collisions(self.model.segment_length + 1, self.model.bender_angle) or \
                 self.test_boarders(self.model.segment_length + 1, self.model.bender_angle):
             pygame.event.post(pygame.event.Event(SEGMENT_OUT_OF_BOUNDARY_ALARM))
+            logger.info("Segment is out of boundaries!")
 
         elif self.model.bender_angle == 0:
             if self.model.total_length + self.model.segment_length < LINE_MAX_LENGTH:
@@ -254,6 +255,7 @@ class Controller:
             else:
                 pygame.event.post(pygame.event.Event(SEGMENT_TOO_LONG_ALARM))
                 print("segment is too long alarm")
+                logger.info("Segment is too long!")
 
         else:
             if self.model.total_length + self.model.segment_length < LINE_MAX_LENGTH:
@@ -261,12 +263,14 @@ class Controller:
             else:
                 pygame.event.post(pygame.event.Event(SEGMENT_TOO_LONG_ALARM))
                 print("segment is too long alarm")
+                logger.info("Segment is too long!")
 
     def rotate_right(self):
         if self.test_collisions(self.model.segment_length, self.model.bender_angle - 1) or \
                 self.test_boarders(self.model.segment_length, self.model.bender_angle - 1):
             pygame.event.post(pygame.event.Event(SEGMENT_OUT_OF_BOUNDARY_ALARM))
             print("out ou boundary right")
+            logger.info("Segment is out of boundaries! to the right")
 
         elif self.model.bender_angle > RIGHT_MIN_VALUE:
             self.model.bender_angle -= 1
@@ -279,7 +283,7 @@ class Controller:
         if self.test_collisions(self.model.segment_length, self.model.bender_angle + 1) or \
                 self.test_boarders(self.model.segment_length, self.model.bender_angle + 1):
             pygame.event.post(pygame.event.Event(SEGMENT_OUT_OF_BOUNDARY_ALARM))
-            print("out ou boundary right")
+            logger.info("Segment is out of boundaries! to the left")
 
         elif self.model.bender_angle < LEFT_MAX_VALUE:
             self.model.bender_angle += 1
@@ -302,19 +306,24 @@ class Controller:
                 self.model.current_polar_point = len(self.model.polar_points)-1
                 print("Enter bending mode")
                 print("We have " + str(len(self.model.polar_points)) + " segments!")
+                logger.info("Enter bending mode")
+                logger.info("We have " + str(len(self.model.polar_points)) + " segments!")
+
             elif self.model.is_bending and self.model.current_polar_point >= 0 and not self.model.sent_current_segment:
                 # case we send one the segments
                 self.model.sent_current_segment = True
                 current_segment = self.model.polar_points[self.model.current_polar_point]
                 print("segment is: " + str(current_segment))
+                logger.info("segment is: " + str(current_segment))
                 to_string = str(current_segment[0] // PIXEL_TO_MM) + "," + str(current_segment[1] * -1) + "\n"
                 self.serial.write(to_string.encode())
-                print("sent :"
-                      + to_string)
+                print("sent :" + to_string)
+                logger.info("sent :" + to_string)
             elif (self.model.is_bending and self.model.current_polar_point == CUT_COMMAND
                   and not self.model.sent_current_segment):
                 # case we need to send CUT
                 print("Sending CUT")
+                logger.info("sent CUT!")
                 to_string = "CUT" + "\n"
                 self.serial.write(to_string.encode())
                 self.model.sent_current_segment = True
@@ -323,6 +332,8 @@ class Controller:
                 # case we need to send CUT
                 to_string = str(self.model.segment_length // PIXEL_TO_MM) + "," + str(self.model.bender_angle* -1) + "\n"
                 print("Sending last segment: " + to_string)
+                logger.info("Sending last segment: " + to_string)
+
                 self.serial.write(to_string.encode())
                 self.model.sent_current_segment = True
 
@@ -336,6 +347,8 @@ class Controller:
                     if "OK" in acknowledge:
                         print(acknowledge)
                         print("acknowledge segment: " + str(self.model.current_polar_point))
+                        logger.info("acknowledge segment: " + str(self.model.current_polar_point))
+
                         self.model.sent_current_segment = False
                         self.model.current_polar_point -= 1
 
@@ -345,11 +358,14 @@ class Controller:
                        and self.model.polar_points[self.model.current_polar_point][1] == 0)):
                     time.sleep(3)
                     print("acknowledge segment: " + str(self.model.current_polar_point))
+                    logger.info("acknowledge segment: " + str(self.model.current_polar_point))
                     self.model.sent_current_segment = False
                     self.model.current_polar_point -= 1
 
             else:
                 print("Ending bend mode")
+                logger.info("Exit bend mode")
+
                 time.sleep(2)
                 # reset to new plan
                 self.model.points = []
@@ -393,14 +409,15 @@ class Controller:
     def display_info(self):
         self.model.info_turn_on = not self.model.info_turn_on
         self.model.current_info_page = 0
+        logger.info("Info button was pressed")
 
     def next_info_screen(self):
-        print("clicked")
         print(self.model.current_info_page)
+        logger.info("Next info screen button was pressed")
         self.model.current_info_page += 1
 
     def prev_info_screen(self):
-        print("clicked 2")
+        logger.info("Prev info screen button was pressed")
         self.model.current_info_page -= 1
 
     def close_info_screen(self):
