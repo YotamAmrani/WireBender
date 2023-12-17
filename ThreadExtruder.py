@@ -49,8 +49,8 @@ class Controller:
         try:
             self.serial = serial.Serial('/dev/ttyACM0', baudrate=BAUD_RATE, timeout=1)
         except serial.SerialException as e:
-            print(e)
-            print("ERROR: could not open serial port")
+            # print(e)
+            # print("ERROR: could not open serial port")
             logger.critical("could not open serial port: " + '/dev/ttyACM0')
             logger.critical("make sure baud rate is correct, serial port is configured by the system,"
                              "and that the USB cable is connected.")
@@ -104,7 +104,6 @@ class Controller:
                 Rect((SCREEN_WIDTH - (SPINNER_DISTANCE - i) * 2) // 2, (SCREEN_HEIGHT - i), (SPINNER_DISTANCE - i) * 2,
                      i))
             # pygame.draw.rect(self._model.screen, 'red', ((SCREEN_WIDTH-(300-i*2))//2, (SCREEN_HEIGHT-i), 300-i*2, i))
-            # print(i)
 
     def update(self, dt):
         """
@@ -211,23 +210,22 @@ class Controller:
                 current_angle += self.model.polar_points[p][1]
 
         return points
-        # print(self.model.points)
 
     def add_segment(self):
         current_segment = (self.model.segment_length, self.model.bender_angle)
-        print("adding: " + str(self.model.segment_length))
+        # print("adding: " + str(self.model.segment_length))
         if current_segment[0] != 0 and current_segment[1] != 0:
             self.model.total_length += self.model.segment_length
             self.model.polar_points = [current_segment] + self.model.polar_points
-        print(self.model.polar_points)
+        # print(self.model.polar_points)
         logger.info("Segment was added: " + str(current_segment))
-        logger.debug("current state: " + str(self.model.polar_points))
+        logger.info("current state: " + str(self.model.polar_points))
 
     def reset_state(self):
         self.model.bender_angle = 0
         self.model.segment_length = MINIMAL_SEGMENT_LENGTH
-        logger.debug("reset state")
-        logger.debug("current state: " + str(self.model.polar_points))
+        logger.info("reset state")
+        logger.info("current state: " + str(self.model.polar_points))
 
     def revert(self):
         if self.model.polar_points:
@@ -235,13 +233,18 @@ class Controller:
             self.model.total_length -= self.model.segment_length
             self.model.polar_points = self.model.polar_points[1:]
             # print(self.model.total_length)
-            print("revert: " + str(self.model.polar_points))
-            print("cuurent: ")
-            print(self.model.segment_length, self.model.bender_angle)
+            # print("revert: " + str(self.model.polar_points))
+            # print("cuurent: ")
+            # print(self.model.segment_length, self.model.bender_angle)
+            logger.info("revert: " + str(self.model.polar_points))
+            logger.info("current: " + str(self.model.segment_length) + "," + str(self.model.bender_angle))
+
+
+
         else:
             self.reset_state()
-        logger.debug("revert last step")
-        logger.debug("current state: " + str(self.model.polar_points))
+        logger.info("revert last step")
+        logger.info("current state: " + str(self.model.polar_points))
 
     def extrude(self):
         if self.test_collisions(self.model.segment_length + 1, self.model.bender_angle) or \
@@ -254,7 +257,7 @@ class Controller:
                 self.model.segment_length += PIXEL_PER_PRESS
             else:
                 pygame.event.post(pygame.event.Event(SEGMENT_TOO_LONG_ALARM))
-                print("segment is too long alarm")
+                # print("segment is too long alarm")
                 logger.info("Segment is too long!")
 
         else:
@@ -262,14 +265,14 @@ class Controller:
                 self.add_segment_and_reset()
             else:
                 pygame.event.post(pygame.event.Event(SEGMENT_TOO_LONG_ALARM))
-                print("segment is too long alarm")
+                # print("segment is too long alarm")
                 logger.info("Segment is too long!")
 
     def rotate_right(self):
         if self.test_collisions(self.model.segment_length, self.model.bender_angle - 1) or \
                 self.test_boarders(self.model.segment_length, self.model.bender_angle - 1):
             pygame.event.post(pygame.event.Event(SEGMENT_OUT_OF_BOUNDARY_ALARM))
-            print("out ou boundary right")
+            # print("out ou boundary right")
             logger.info("Segment is out of boundaries! to the right")
 
         elif self.model.bender_angle > RIGHT_MIN_VALUE:
@@ -277,7 +280,9 @@ class Controller:
 
         else:
             pygame.event.post(pygame.event.Event(ROTATE_RIGHT_ALARM))
-            print("rotate right alarm")
+            # print("rotate right alarm")
+            logger.info("Segment is out of boundaries! to the right")
+
 
     def rotate_left(self):
         if self.test_collisions(self.model.segment_length, self.model.bender_angle + 1) or \
@@ -290,7 +295,8 @@ class Controller:
 
         else:
             pygame.event.post(pygame.event.Event(ROTATE_LEFT_ALARM))
-            print("rotate left alarm")
+            # print("rotate left alarm")
+            logger.info("Segment is out of boundaries! to the left")
 
     def add_segment_and_reset(self):
         self.add_segment()
@@ -304,8 +310,8 @@ class Controller:
                 self.model.is_bending = True
                 self.model.pending_screen_timer = time.time()
                 self.model.current_polar_point = len(self.model.polar_points)-1
-                print("Enter bending mode")
-                print("We have " + str(len(self.model.polar_points)) + " segments!")
+                # print("Enter bending mode")
+                # print("We have " + str(len(self.model.polar_points)) + " segments!")
                 logger.info("Enter bending mode")
                 logger.info("We have " + str(len(self.model.polar_points)) + " segments!")
 
@@ -313,16 +319,16 @@ class Controller:
                 # case we send one the segments
                 self.model.sent_current_segment = True
                 current_segment = self.model.polar_points[self.model.current_polar_point]
-                print("segment is: " + str(current_segment))
+                # print("segment is: " + str(current_segment))
                 logger.info("segment is: " + str(current_segment))
                 to_string = str(current_segment[0] // PIXEL_TO_MM) + "," + str(current_segment[1] * -1) + "\n"
                 self.serial.write(to_string.encode())
-                print("sent :" + to_string)
+                # print("sent :" + to_string)
                 logger.info("sent :" + to_string)
             elif (self.model.is_bending and self.model.current_polar_point == CUT_COMMAND
                   and not self.model.sent_current_segment):
                 # case we need to send CUT
-                print("Sending CUT")
+                # print("Sending CUT")
                 logger.info("sent CUT!")
                 to_string = "CUT" + "\n"
                 self.serial.write(to_string.encode())
@@ -331,7 +337,7 @@ class Controller:
                   and not self.model.sent_current_segment):
                 # case we need to send CUT
                 to_string = str(self.model.segment_length // PIXEL_TO_MM) + "," + str(self.model.bender_angle* -1) + "\n"
-                print("Sending last segment: " + to_string)
+                # print("Sending last segment: " + to_string)
                 logger.info("Sending last segment: " + to_string)
 
                 self.serial.write(to_string.encode())
@@ -345,8 +351,8 @@ class Controller:
                      self.model.polar_points[self.model.current_polar_point][1] != 0)):
                     acknowledge = self.serial.readline().decode().strip()
                     if "OK" in acknowledge:
-                        print(acknowledge)
-                        print("acknowledge segment: " + str(self.model.current_polar_point))
+                        # print(acknowledge)
+                        # print("acknowledge segment: " + str(self.model.current_polar_point))
                         logger.info("acknowledge segment: " + str(self.model.current_polar_point))
 
                         self.model.sent_current_segment = False
@@ -357,13 +363,13 @@ class Controller:
                       (self.model.current_polar_point >= 0
                        and self.model.polar_points[self.model.current_polar_point][1] == 0)):
                     time.sleep(3)
-                    print("acknowledge segment: " + str(self.model.current_polar_point))
+                    # print("acknowledge segment: " + str(self.model.current_polar_point))
                     logger.info("acknowledge segment: " + str(self.model.current_polar_point))
                     self.model.sent_current_segment = False
                     self.model.current_polar_point -= 1
 
             else:
-                print("Ending bend mode")
+                # print("Ending bend mode")
                 logger.info("Exit bend mode")
 
                 time.sleep(2)
@@ -412,7 +418,6 @@ class Controller:
         logger.info("Info button was pressed")
 
     def next_info_screen(self):
-        print(self.model.current_info_page)
         logger.info("Next info screen button was pressed")
         self.model.current_info_page += 1
 
@@ -430,19 +435,19 @@ class Controller:
         self.reset_state()
         self.model.total_length = 0
         self.model.is_bending = False
-        logger.debug("Cleared all segments")
-        logger.debug("current state: " + str(self.model.polar_points))
+        logger.info("Cleared all segments")
+        logger.info("current state: " + str(self.model.polar_points))
 
     @staticmethod
     def finish():
-        print("finish")
+        logger.info("Quit")
         pygame.event.post(pygame.event.Event(QUIT))
 
 
 def runPyGame():
     try:
         pygame.init()
-        logger.debug("pygame Loaded successfully!")
+        logger.info("pygame Loaded successfully!")
     except e:
         logger.critical("pygame failed to load")
 
