@@ -292,35 +292,6 @@ class Controller:
         self.add_segment()
         self.reset_state()
 
-    # def send_to_bender(self):
-    #     if self.serial is not None:
-    #         self.model.is_bending = True
-    #         self.model.pending_screen_timer = time.time()
-    #         for seg in reversed(self.model.polar_points):
-    #
-    #             print("segment is: " + str(seg))
-    #             to_string = str(seg[0] // PIXEL_TO_MM) + "," + str(seg[1]*-1) + "\n"
-    #             print("After conversion: " + to_string)
-    #             self.serial.write(to_string.encode())
-    #             print("sent :"
-    #                   + to_string)
-    #             time.sleep(6)
-    #         to_string = str(self.model.segment_length // PIXEL_TO_MM) + "," + str(0) + "\n"
-    #         print("After conversion: " + to_string)
-    #         self.serial.write(to_string.encode())
-    #         print("sent :"
-    #               + to_string)
-    #         time.sleep(3)
-    #         to_string = "CUT" + "\n"
-    #         self.serial.write(to_string.encode())
-    #         time.sleep(8)
-    #
-    #         # reset to new plan
-    #         self.model.points = []
-    #         self.model.polar_points = []
-    #         self.reset_state()
-    #         self.model.total_length = 0
-    #         self.model.is_bending = False
     def send_to_bender(self):
         #     non blocking version of send to bender
         if self.serial is not None:

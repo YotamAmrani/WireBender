@@ -32,8 +32,6 @@ MINIMAL_SEGMENT_LENGTH = 40
 
 LINE_MAX_LENGTH = 150 * PIXEL_TO_MM  # 1000/5 = 250mm
 
-# Logging
-LOGGING_FILE_PATH = "logging.log"
 
 # screen
 # infoObject = pygame.display.Info()
@@ -95,40 +93,30 @@ NEXT_BUTTON_POSITION = (80,253)
 
 # load images
 SCREEN_IMAGE = "pictures/BG.jpg"
-# SCREEN_IMAGE = "מסכים מוצג כיפוף/מסכים למיצג כיפוף_החופש ליצור30.jpg"
-# INFO_SCREEN_IMAGE_PATH = "pictures/info_screen.jpg"
 INFO_SCREEN_0_IMAGE_PATH = "pictures/info_modal_0.jpg"
 INFO_SCREEN_1_IMAGE_PATH = "pictures/info_modal_1.jpg"
 
 SPINNER_IMAGE = "pictures/spinner_medium.png"
-# EXTRUDE_HOVER_IMAGE_PATH = "pictures/extrude_button_1.png"
 EXTRUDE_IDLE_IMAGE_PATH = "pictures/press_wire_idle.jpg"
 EXTRUDE_CLICK_IMAGE_PATH = "pictures/press_wire_click.jpg"
-# REVERT_HOVER_IMAGE_PATH = "pictures/revert_button_1.png"
 REVERT_IDLE_IMAGE_PATH = "pictures/revert_idle.jpg"
 REVERT_CLICK_IMAGE_PATH = "pictures/revert_click.jpg"
-# ROTATE_RIGHT_HOVER_IMAGE_PATH = "pictures/rotr_button_1.png"
 ROTATE_RIGHT_IDLE_IMAGE_PATH = "pictures/bend_right_idle.jpg"
 ROTATE_RIGHT_CLICK_IMAGE_PATH = "pictures/bend_right_click.jpg"
-# ROTATE_LEFT_HOVER_IMAGE_PATH = "pictures/rotl_button_1.png"
 ROTATE_LEFT_IDLE_IMAGE_PATH = "pictures/bend_left_idle.jpg"
 ROTATE_LEFT_CLICK_IMAGE_PATH = "pictures/bend_left_click.jpg"
-CLEAN_IDLE_IMAGE_PATH = "pictures/bend_left_idle.jpg"
-CLEAN_CLICK_IMAGE_PATH = "pictures/bend_left_click.jpg"
 
 SEND_IDLE_IMAGE_PATH = "pictures/send_idle.jpg"
 SEND_CLICK_IMAGE_PATH = "pictures/send_click.jpg"
 INFO_IDLE_IMAGE_PATH = "pictures/info_idle.jpg"
 INFO_CLICK_IMAGE_PATH = "pictures/info_click.jpg"
-CLOSE_INFO_IDLE_IMAGE_PATH = "pictures/close_info_idle.jpg"
-CLOSE_INFO_CLICK_IMAGE_PATH = "pictures/close_info_click.jpg"
+
 CLEAR_IDLE_IMAGE_PATH = "pictures/clear_all_idle.jpg"
 CLEAR_CLICK_IMAGE_PATH = "pictures/clear_all_click.jpg"
 NEXT_INFO_IDLE_IMAGE_PATH = "pictures/next_page.jpg"
 PREV_INFO_IDLE_IMAGE_PATH = "pictures/prev_page.jpg"
 
-
-CAPACITY_IMAGE_PATH = "pictures/Loading.png"
+CAPACITY_IMAGE_PATH = "pictures/loading.jpg"
 
 PLEASE_WAIT_SCREEN_0 = "pictures/please_wait_1.jpg"
 PLEASE_WAIT_SCREEN_1 = "pictures/please_wait_2.jpg"

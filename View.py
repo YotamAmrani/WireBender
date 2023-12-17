@@ -138,6 +138,8 @@ class View:
         if ratio < 0.02:
             ratio = 0.02
 
+        self._model.screen.blit(self.scale_image(self._model.capacity_buffer), (bar_left, bar_top, bar_width + 6, bar_hieght))
+
         pygame.draw.rect(self._model.screen, BUFFER_YELLOW,
                          (bar_left, bar_top, bar_width + 6, bar_hieght
                           ))
