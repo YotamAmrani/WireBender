@@ -3,13 +3,13 @@ import logging.handlers as handlers
 
 # create logger
 logger = logging.getLogger('ThreadExtruder')
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO) # set to debug for full prints
 
 
 # create file handler and set level to debug
-fh = handlers.TimedRotatingFileHandler('logs/logging.log',when='D', interval=7, backupCount=7)
+fh = handlers.TimedRotatingFileHandler('logging.log',when='D', interval=7, backupCount=7)
 
-fh.setLevel(logging.DEBUG)
+fh.setLevel(logging.INFO) # determines severity for the file prints
 
 # create formatter
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
